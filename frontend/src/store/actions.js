@@ -22,7 +22,7 @@ export function logout({commit}) {
 }
 
 export function getProducts({commit}, data) {
-    return axiosClient.get('/product', data)
+    return axiosClient.get('/product')
         .then((res => {
             console.log(res.data);
         }))
