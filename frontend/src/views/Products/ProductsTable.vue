@@ -13,7 +13,7 @@
                     <option value="100">100</option>
                 </select>
 
-                <span class="ml-3">Found {{ products.total }} products</span>
+                <span class="ml-3">Found {{ !products.total ? '0' : products.total }} products</span>
             </div>
 
             <div>
@@ -84,77 +84,59 @@
                         {{ product.updated_at }}
                     </td>
 
-                    <!-- <td class="border-b p-2 ">
-          <Menu as="div" class="relative inline-block text-left">
-            <div>
-              <MenuButton
-                class="inline-flex items-center justify-center w-full justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-              >
-                <DotsVerticalIcon
-                  class="h-5 w-5 text-indigo-500"
-                  aria-hidden="true"/>
-              </MenuButton>
-            </div>
+                    <td class="border-b p-2 ">
+                        <Menu as="div" class="relative inline-block text-left">
+                            <div>
+                                <MenuButton
+                                    class="inline-flex items-center  justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                                    <DotsVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
+                                </MenuButton>
+                            </div>
 
-            <transition
-              enter-active-class="transition duration-100 ease-out"
-              enter-from-class="transform scale-95 opacity-0"
-              enter-to-class="transform scale-100 opacity-100"
-              leave-active-class="transition duration-75 ease-in"
-              leave-from-class="transform scale-100 opacity-100"
-              leave-to-class="transform scale-95 opacity-0"
-            >
-              <MenuItems
-                class="absolute z-10 right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              >
-                <div class="px-1 py-1">
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      :class="[
-                        active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                      ]"
-                      @click="editProduct(product)"
-                    >
-                      <PencilIcon
-                        :active="active"
-                        class="mr-2 h-5 w-5 text-indigo-400"
-                        aria-hidden="true"
-                      />
-                      Edit
-                    </button>
-                  </MenuItem>
-                  <MenuItem v-slot="{ active }">
-                    <button
-                      :class="[
-                        active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                        'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                      ]"
-                      @click="deleteProduct(product)"
-                    >
-                      <TrashIcon
-                        :active="active"
-                        class="mr-2 h-5 w-5 text-indigo-400"
-                        aria-hidden="true"
-                      />
-                      Delete
-                    </button>
-                  </MenuItem>
-                </div>
-              </MenuItems>
-            </transition>
-          </Menu>
-                    </td> -->
+                            <transition enter-active-class="transition duration-100 ease-out"
+                                enter-from-class="transform scale-95 opacity-0"
+                                enter-to-class="transform scale-100 opacity-100"
+                                leave-active-class="transition duration-75 ease-in"
+                                leave-from-class="transform scale-100 opacity-100"
+                                leave-to-class="transform scale-95 opacity-0">
+                                <MenuItems
+                                    class="absolute z-10 right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div class="px-1 py-1">
+                                        <MenuItem v-slot="{ active }">
+                                        <button :class="[
+                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                                'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                                            ]" @click="editProduct(product)">
+                                            <PencilIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
+                                                aria-hidden="true" />
+                                            Edit
+                                        </button>
+                                        </MenuItem>
+                                        <MenuItem v-slot="{ active }">
+                                        <button :class="[
+                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                                'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                                            ]" @click="deleteProduct(product)">
+                                            <TrashIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
+                                                aria-hidden="true" />
+                                            Delete
+                                        </button>
+                                        </MenuItem>
+                                    </div>
+                                </MenuItems>
+                            </transition>
+                        </Menu>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <!-- <div v-if="!products.loading" class="flex justify-between items-center mt-5">
+        <div v-if="!products.loading" class="flex justify-between items-center mt-5">
             <div v-if="products.data.length">
                 Showing from {{ products.from }} to {{ products.to }}
             </div>
             <nav v-if="products.total > products.limit"
                 class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
                 <a v-for="(link, i) of products.links" :key="i" :disabled="!link.url" href="#"
                     @click="getForPage($event, link)" aria-current="page"
                     class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap" :class="[
@@ -167,7 +149,7 @@
                         ]" v-html="link.label">
                 </a>
             </nav>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -175,12 +157,19 @@
 import store from '../../store';
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import Spinner from "../../components/core/Spinner.vue";
+import {Menu, MenuItems, MenuButton, MenuItem} from '@headlessui/vue';
 
 export default {
     components: {
         TableHeaderCell,
-        Spinner
+        Spinner,
+        Menu,
+        MenuButton,
+        MenuItem,
+        MenuItems
     },
+
+    emits: ['clickEdit'],
 
     data() {
         return {
@@ -206,6 +195,18 @@ export default {
             });
         },
 
+        getForPage(e, link) {
+            e.preventDefault();
+
+            if (!link.url || link.active) {
+                return;
+            }
+
+            this.getProducts(link.url);
+
+
+        },
+
         sortProducts(field) {
             if (field === this.sortField) {
                 this.sortDirection === 'desc' ? this.sortDirection = 'asc' : this.sortDirection = 'desc';
@@ -215,6 +216,21 @@ export default {
             }
 
             this.getProducts();
+        },
+
+        deleteProduct(product) {
+            if (!confirm("Tem certeza que deseja deletar este produto?")) {
+                return;
+            }
+
+            store.dispatch('deleteProduct', product.id)
+                .then(res => {
+                    store.dispatch('getProducts');
+                })
+        },  
+
+        editProduct(product) {
+            this.$emit('clickEdit', product);
         }
     },
 

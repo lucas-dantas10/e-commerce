@@ -25,5 +25,17 @@ export function getProducts({commit}, data) {
     return axiosClient.get('/product')
         .then((res => {
             console.log(res.data);
-        }))
+        }));
 }
+
+export function getProduct({commit}, idProduct) {
+    return axiosClient.get(`/products/${idProduct}`);
+}
+
+export function deleteProduct({commit}, idProduct) {
+    return axiosClient.delete(`/products/${idProduct}`);
+}
+
+// export function updateProduct({commit}, product) {
+//     return axiosClient.post('/products')
+// }
