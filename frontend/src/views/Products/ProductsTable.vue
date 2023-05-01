@@ -89,7 +89,7 @@
                             <div>
                                 <MenuButton
                                     class="inline-flex items-center  justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                                    <DotsVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
+                                    <DocumentPlusIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
                                 </MenuButton>
                             </div>
 
@@ -109,7 +109,7 @@
                                             ]" @click="editProduct(product)">
                                             <PencilIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
                                                 aria-hidden="true" />
-                                            Edit
+                                            Editar
                                         </button>
                                         </MenuItem>
                                         <MenuItem v-slot="{ active }">
@@ -119,7 +119,7 @@
                                             ]" @click="deleteProduct(product)">
                                             <TrashIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
                                                 aria-hidden="true" />
-                                            Delete
+                                            Deletar
                                         </button>
                                         </MenuItem>
                                     </div>
@@ -132,11 +132,10 @@
         </table>
         <div v-if="!products.loading" class="flex justify-between items-center mt-5">
             <div v-if="products.data.length">
-                Showing from {{ products.from }} to {{ products.to }}
+                Mostrando de {{ products.from }} para {{ products.to }}
             </div>
             <nav v-if="products.total > products.limit"
                 class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                <!-- Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" -->
                 <a v-for="(link, i) of products.links" :key="i" :disabled="!link.url" href="#"
                     @click="getForPage($event, link)" aria-current="page"
                     class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap" :class="[
@@ -158,6 +157,7 @@ import store from '../../store';
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import Spinner from "../../components/core/Spinner.vue";
 import {Menu, MenuItems, MenuButton, MenuItem} from '@headlessui/vue';
+import { DocumentPlusIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
 
 export default {
     components: {
@@ -166,7 +166,10 @@ export default {
         Menu,
         MenuButton,
         MenuItem,
-        MenuItems
+        MenuItems,
+        DocumentPlusIcon,
+        PencilIcon,
+        TrashIcon
     },
 
     emits: ['clickEdit'],

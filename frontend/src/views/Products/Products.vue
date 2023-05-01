@@ -10,18 +10,18 @@
     </div>
 
     <ProductsTable @click-edit="editProduct"/>
-    <ProductModal v-model="showProductModal" :product="productModel" @close="onModalClose"/>
+    <ProductsModal v-model="showProductModal" :product="productModel" @close="onModalClose"/>
 </template>
 
 <script>
 import ProductsTable from './ProductsTable.vue';
 import store from '../../store';
-// import ProductModal from './ProductModal.vue';
+import ProductsModal from './ProductsModal.vue';
 
 export default {
     components: {
         ProductsTable,
-        // ProductModal
+        ProductsModal
     },
 
     data() {
@@ -34,7 +34,13 @@ export default {
                 image: '',
                 price: ''
             },
-            productModel: ''
+            productModel: {
+                id: '',
+                title: '',
+                description: '',
+                image: '',
+                price: '',
+            }
         }
     },
 

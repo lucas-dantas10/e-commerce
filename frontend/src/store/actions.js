@@ -5,8 +5,6 @@ export function login({commit}, data) {
             .then((res) => {
                 commit('setUser', res.data.user.original);
                 commit('setToken', res.data.token);
-                console.log(res.data.user.original)
-                console.log(res.data.token);
                 return res;
             })
 }
@@ -24,7 +22,7 @@ export function logout({commit}) {
 export function getProducts({commit}, data) {
     return axiosClient.get('/product')
         .then((res => {
-            console.log(res.data);
+            // console.log(res.data);
         }));
 }
 
@@ -36,6 +34,6 @@ export function deleteProduct({commit}, idProduct) {
     return axiosClient.delete(`/products/${idProduct}`);
 }
 
-// export function updateProduct({commit}, product) {
-//     return axiosClient.post('/products')
-// }
+export function updateProduct({commit}, product) {
+    return axiosClient.put(`/products/${product}`);
+}

@@ -19,7 +19,7 @@
                                 class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center" />
                             <header class="py-3 px-4 flex justify-between items-center">
                                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                                    {{ product.id ? `Update product: "${props.product.title}"` : 'Create new Product' }}
+                                    {{ products.id ? `Update product: "${products.title}"` : 'Create new Product' }}
                                 </DialogTitle>
                                 <button @click="closeModal()"
                                     class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]">
@@ -32,14 +32,14 @@
                             </header>
                             <form @submit.prevent="onSubmit">
                                 <div class="bg-white px-4 pt-5 pb-4">
-                                    <CustomInput class="mb-2" v-model="product.title" label="Product Title" />
+                                    <CustomInput class="mb-2" v-model="products.title" label="Product Title" />
                                     <CustomInput type="file" class="mb-2" label="Product Image"
-                                        @change="file => product.image = file" />
-                                    <CustomInput type="textarea" class="mb-2" v-model="product.description"
+                                        @change="file => products.image = file" />
+                                    <CustomInput type="textarea" class="mb-2" v-model="products.description"
                                         label="Description" />
-                                    <CustomInput type="number" class="mb-2" v-model="product.price" label="Price"
+                                    <CustomInput type="number" class="mb-2" v-model="products.price" label="Price"
                                         prepend="$" />
-                                    <CustomInput type="checkbox" class="mb-2" v-model="product.published"
+                                    <CustomInput type="checkbox" class="mb-2" v-model="products.published"
                                         label="Published" />
                                 </div>
                                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -64,19 +64,16 @@
 
 <script>
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
+// import CustomInput from "../../components/core/CustomInput.vue";
+import Spinner from "../../components/core/Spinner.vue";
 export default {
     components: {
         Dialog,
         DialogPanel,
         DialogTitle,
         TransitionChild,
-        TransitionRoot
-    },
-    data() {
-        return {
-            loading: false,
-            product: this.product
-        }
+        TransitionRoot,
+        Spinner
     },
 
     emits: ['close', 'update:modelValue'],
@@ -89,19 +86,22 @@ export default {
         }
     },
 
+    data() {
+        return {
+            loading: false,
+            products: '',
+            show: false
+        }
+    },
+
+    mounted() {
+        this.products = this.product;
+    },
+
     methods: {
         closeModal() {
             this.show = false;
             this.$emit('close');
-        }
-    },
-
-    computed: {
-        show() {
-            return {
-                get: () => this.modelValue,
-                set: (value) => this.$emit('update:modelValue', value)
-            }
         },
 
         onSubmit() {
