@@ -78,7 +78,7 @@
                         {{ product.title }}
                     </td>
                     <td class="border-b p2">
-                        {{ $filters.currencyBR(product.title) }}
+                        {{ $filters.currencyBR(product.price) }}
                     </td>
                     <td class="border-b p-2 ">
                         {{ product.updated_at }}

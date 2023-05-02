@@ -30,7 +30,7 @@
                                     </svg>
                                 </button>
                             </header>
-                            <form @submit.prevent="onSubmit">
+                            <form @submit.prevent="onSubmit" enctype="multipart/form-data">
                                 <div class="bg-white px-4 pt-5 pb-4">
                                     <CustomInput class="mb-2" v-model="products.title" label="Product Title" />
                                     <CustomInput type="file" class="mb-2" label="Product Image"
@@ -43,7 +43,7 @@
                                         label="Published" />
                                 </div>
                                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                                    <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
                           text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
                                         Enviar
                                     </button>
@@ -64,8 +64,10 @@
 
 <script>
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-// import CustomInput from "../../components/core/CustomInput.vue";
+import CustomInput from "../../components/core/CustomInput.vue";
 import Spinner from "../../components/core/Spinner.vue";
+import { computed } from 'vue';
+import store from '../../store';
 export default {
     components: {
         Dialog,
@@ -73,7 +75,8 @@ export default {
         DialogTitle,
         TransitionChild,
         TransitionRoot,
-        Spinner
+        Spinner,
+        CustomInput
     },
 
     emits: ['close', 'update:modelValue'],
@@ -90,7 +93,17 @@ export default {
         return {
             loading: false,
             products: '',
-            show: false
+        }
+    },
+
+    setup(props, { emit }) {
+        const show = computed({
+            get: () => props.modelValue,
+            set: (value) => emit('update:modelValue', value)
+        })
+
+        return {
+            show
         }
     },
 
@@ -107,9 +120,9 @@ export default {
         onSubmit() {
             this.loading = true;
             if (this.product.id) {
-                store.dispatch('updateProduct', this.product)
+                store.dispatch('updateProduct', this.products)
                     .then(response => {
-                        loading.value = false;
+                        this.loading = false;
                         if (response.status === 200) {
                             // TODO show notification
                             store.dispatch('getProducts')
@@ -117,17 +130,19 @@ export default {
                         }
                     })
             } else {
-                store.dispatch('createProduct', this.product)
+                store.dispatch('createProduct', this.products)
                     .then(response => {
-                        loading.value = false;
+                        this.loading = false;
                         if (response.status === 201) {
                             // TODO show notification
-                            store.dispatch('getProducts')
-                            closeModal()
+                            console.log(response.data);
+                            store.dispatch('getProducts');
+                            this.closeModal();
                         }
                     })
                     .catch(err => {
-                        loading.value = false;
+                        this.loading = false;
+                        console.log(err);
                         debugger;
                     })
             }
@@ -135,7 +150,7 @@ export default {
     },
 
     updated() {
-        this.product = {
+        this.products = {
             id: this.product.id,
             title: this.product.title,
             image: this.product.image,
