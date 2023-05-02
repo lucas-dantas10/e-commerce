@@ -17,6 +17,8 @@ class AuthController extends Controller
             'remember' => 'boolean'
         ]);
 
+        \dd($credentials);
+
         $remember = $credentials['remember'] ?? false;
 
         unset($credentials['remember']);
