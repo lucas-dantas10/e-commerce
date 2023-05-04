@@ -227,9 +227,8 @@ export default {
             }
 
             store.dispatch('deleteProduct', product.id)
-                .then(res => {
-                    store.dispatch('getProducts');
-                })
+                .then(res => store.dispatch('getProducts'))
+                .catch(err => console.log(err));
         },  
 
         editProduct(product) {
@@ -239,6 +238,7 @@ export default {
 
     computed: {
         products() {
+            console.log( store.state.products);
             return store.state.products;
         }
     }

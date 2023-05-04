@@ -29,7 +29,6 @@ class ProductController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
-
         return ProductListResource::collection($query);
     }
 
@@ -111,8 +110,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(int $id)
     {
+        $product = Product::findOrFail($id);
         $product->delete();
 
         return response()->noContent();
@@ -126,8 +126,9 @@ class ProductController extends Controller
             Storage::makeDirectory($path, 0755, true);
         }
 
-        if (!Storage::putFileAs('public/' . $path, $image, $image->getClientOriginalExtension()))  {
-            throw new Exception("Incapaz de salvar o arquivo {$image->getClientOriginalExtension()}");
+
+        if (!Storage::putFileAs($path, $image, $image->getClientOriginalName()))  {
+            throw new Exception("Incapaz de salvar o arquivo {$image->getClientOriginalName()}");
         } 
 
         return $path . '/' . $image->getClientOriginalName();

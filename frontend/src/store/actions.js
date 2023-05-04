@@ -63,6 +63,7 @@ export function createProduct({commit}, product) {
         form.append('price', product.price);
         form.append('description', product.description);
         form.append('published', product.published);
+        form.append('updated_at', product.updated_at);
         product = form;
     }
 
