@@ -26,6 +26,6 @@ export default {
         sortDirection: String
     },
 
-    emit: ['click']
+    emits: ['click']
 }
 </script>

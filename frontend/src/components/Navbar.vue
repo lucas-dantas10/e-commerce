@@ -81,8 +81,14 @@ export default {
 
     computed: {
         currentUser() {
-            // console.log(store.state.user.data);
+
             return store.state.user.data;
+
+            // store.dispatch('getCurrentUser', store.state.user.data)
+            //     .then(res => {
+            //         return res.data;
+            //     })
+            //     .catch(err => console.log(err));
         }
     }
 }
