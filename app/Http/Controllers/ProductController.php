@@ -66,8 +66,9 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(int $id)
     {
+        $product = Product::findOrFail($id);
         return new ProductResource($product);
     }
 
@@ -82,10 +83,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductRequest $request, int $id)
     {
         $data = $request->validated();
         $data['updated_by'] = $request->user()->id;
+        $product = Product::findOrFail($id);
 
         $image = $data['image'] ?? null;
 
@@ -96,7 +98,7 @@ class ProductController extends Controller
             $data['image_size'] = $image->getSize();
 
             if ($product->image) {
-                Storage::deleteDirectory('/public/' . dirname($product->image));
+                Storage::deleteDirectory(dirname($product->image));
             }
         }
 
