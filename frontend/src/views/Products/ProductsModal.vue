@@ -12,11 +12,10 @@
                         enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
                         leave-from="opacity-100 translate-y-0 sm:scale-100"
-                        leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                        <DialogPanel
-                            class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-[700px] sm:w-full">
-                            <Spinner v-if="loading"
-                                class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center" />
+                        leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    >
+                        <DialogPanel class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-[700px] sm:w-full">
+                            <Spinner v-if="loading" class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center" />
                             <header class="py-3 px-4 flex justify-between items-center">
                                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
                                     {{ products.id ? `Update product: "${products.title}"` : 'Create new Product' }}
@@ -32,15 +31,40 @@
                             </header>
                             <form @submit.prevent="onSubmit" enctype="multipart/form-data">
                                 <div class="bg-white px-4 pt-5 pb-4">
-                                    <CustomInput class="mb-2" v-model="products.title" label="Product Title" />
-                                    <CustomInput type="file" class="mb-2" label="Product Image"
-                                        @change="file => products.image = file" />
-                                    <CustomInput type="textarea" class="mb-2" v-model="products.description"
-                                        label="Description" />
-                                    <CustomInput type="number" class="mb-2" v-model="products.price" label="Price"
-                                        prepend="$" />
-                                    <CustomInput type="checkbox" class="mb-2" v-model="products.published"
-                                        label="Published" />
+                                    <CustomInput 
+                                        class="mb-2" 
+                                        v-model="products.title" 
+                                        label="Product Title" 
+                                    />
+
+                                    <CustomInput 
+                                        type="file" 
+                                        class="mb-2" 
+                                        label="Product Image"
+                                        @change="file => products.image = file" 
+                                    />
+                                    
+                                    <CustomInput 
+                                        type="textarea" 
+                                        class="mb-2" 
+                                        v-model="products.description"
+                                        label="Description" 
+                                    />
+
+                                    <CustomInput 
+                                        type="number" 
+                                        class="mb-2" 
+                                        v-model="products.price" 
+                                        label="Price"
+                                        prepend="$" 
+                                    />
+
+                                    <CustomInput 
+                                        type="checkbox" 
+                                        class="mb-2" 
+                                        v-model="products.published"
+                                        label="Published" 
+                                    />
                                 </div>
                                 <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                     <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
@@ -79,8 +103,6 @@ export default {
         CustomInput
     },
 
-    emits: ['close', 'update:modelValue'],
-
     props: {
         modelValue: Boolean,
         product: {
@@ -88,11 +110,13 @@ export default {
             required: true
         }
     },
+    
+    emits: ['update:modelValue', 'close'],
 
     data() {
         return {
             loading: false,
-            products: '',
+            products: this.product,
         }
     },
 
@@ -105,10 +129,6 @@ export default {
         return {
             show
         }
-    },
-
-    mounted() {
-        this.products = this.product;
     },
 
     methods: {
@@ -126,7 +146,7 @@ export default {
                         if (response.status === 200) {
                             // TODO show notification
                             store.dispatch('getProducts')
-                            closeModal()
+                            this.closeModal()
                         }
                     })
             } else {
@@ -135,7 +155,6 @@ export default {
                         this.loading = false;
                         if (response.status === 201) {
                             // TODO show notification
-                            console.log(response.data);
                             store.dispatch('getProducts');
                             this.closeModal();
                         }
@@ -150,14 +169,15 @@ export default {
     },
 
     updated() {
+        // debugger;
         this.products = {
             id: this.product.id,
             title: this.product.title,
-            image: this.product.image,
+            image: this.product.image_url,
             description: this.product.description,
             price: this.product.price,
             published: this.product.published
         }
-    }
+    },
 }
 </script>

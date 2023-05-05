@@ -33,7 +33,8 @@ export default {
                 title: '',
                 description: '',
                 image: '',
-                price: ''
+                price: '',
+                published: ''
             },
             productModel: {
                 id: '',
@@ -41,6 +42,7 @@ export default {
                 description: '',
                 image: '',
                 price: '',
+                published: ''
             }
         }
     },
@@ -48,9 +50,16 @@ export default {
     methods: {
 
         editProduct(p) {
-            store.dispatch('getProducts', p.id)
-                .then(data => {
-                    this.productModel = data;
+            store.dispatch('getProduct', p.id)
+                .then(res => {
+                    this.productModel = {
+                        id: res.data.id,
+                        title: res.data.title,
+                        description: res.data.description,
+                        image: res.data.image_url,
+                        price: res.data.price,
+                        published: ''
+                    };
                     this.showAddNewModal();
                 })
         },

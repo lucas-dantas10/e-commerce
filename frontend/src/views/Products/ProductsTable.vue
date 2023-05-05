@@ -89,7 +89,7 @@
                             <div>
                                 <MenuButton
                                     class="inline-flex items-center  justify-center rounded-full w-10 h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                                    <DocumentPlusIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
+                                    <EllipsisVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
                                 </MenuButton>
                             </div>
 
@@ -132,7 +132,7 @@
         </table>
         <div v-if="!products.loading" class="flex justify-between items-center mt-5">
             <div v-if="products.data.length">
-                Mostrando de {{ products.from }} para {{ products.to }}
+                Mostrando de {{ products.from }} a {{ products.to }}
             </div>
             <nav v-if="products.total > products.limit"
                 class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
@@ -157,7 +157,7 @@ import store from '../../store';
 import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import Spinner from "../../components/core/Spinner.vue";
 import {Menu, MenuItems, MenuButton, MenuItem} from '@headlessui/vue';
-import { DocumentPlusIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
 
 export default {
     components: {
@@ -167,7 +167,7 @@ export default {
         MenuButton,
         MenuItem,
         MenuItems,
-        DocumentPlusIcon,
+        EllipsisVerticalIcon,
         PencilIcon,
         TrashIcon
     },
@@ -238,7 +238,6 @@ export default {
 
     computed: {
         products() {
-            console.log( store.state.products);
             return store.state.products;
         }
     }
