@@ -2,10 +2,10 @@ import axiosClient from '../axios.js';
 
 export function login({commit}, data) {
     return axiosClient.post('/login', data)
-            .then((res) => {
-                commit('setUser', res.data.user.original);
-                commit('setToken', res.data.token);
-                return res;
+            .then(({data}) => {
+                commit("setUser", data.user.original);
+                commit("setToken", data.token);
+                return data;
             })
 }
 
@@ -71,7 +71,7 @@ export function updateProduct({commit}, product) {
         form.append('image', product.image);
         form.append('price', product.price);
         form.append('description', product.description || '');
-        form.append('published', '');
+        form.append('published', product.published);
         form.append('_method', 'PUT');
         product = form;
     } else {
