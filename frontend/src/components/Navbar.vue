@@ -8,7 +8,7 @@
         <Menu as="div" class="relative inline-block text-left">
             <MenuButton class="flex items-center">
                 <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
-                <small>{{ currentUser.name }}</small>
+                <small>{{ currentUser.data.name }}</small>
                 <ChevronDownIcon class="h-5 w-5 text-violet-200 hover:text-violet-100" aria-hidden="true" />
             </MenuButton>
 
@@ -63,9 +63,13 @@ export default {
         Bars3Icon,
         UserIcon,
         ArrowLeftOnRectangleIcon
-    },      
+    },
 
     emits: ['toggle-sidebar'],
+
+    mounted() {
+        this.currentUser;
+    },
 
     methods: {
         logout() {
@@ -81,14 +85,7 @@ export default {
 
     computed: {
         currentUser() {
-
-            return store.state.user.data;
-
-            // store.dispatch('getCurrentUser', store.state.user.data)
-            //     .then(res => {
-            //         return res.data;
-            //     })
-            //     .catch(err => console.log(err));
+            return store.state.user;
         }
     }
 }
