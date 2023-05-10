@@ -28,3 +28,20 @@ export function setProducts(state, [loading, data = null]) {
 
     state.products.loading = loading;
 }
+
+export function setUsers(state, [loading, data = null]) {
+    if (data) {
+        state.users = {
+            ...state.users,
+            data: data.data,
+            links: data.links,
+            page: data.current_page,
+            limit: data.per_page,
+            from: data.from,
+            to: data.to,
+            total: data.total,
+        }
+    }
+
+    state.users.loading = loading;
+}

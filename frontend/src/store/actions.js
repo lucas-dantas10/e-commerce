@@ -1,4 +1,5 @@
 import axiosClient from '../axios.js';
+import state from './state.js';
 
 export function login({commit}, data) {
     return axiosClient.post('/login', data)
@@ -93,4 +94,27 @@ export function createProduct({commit}, product) {
     }
 
     return axiosClient.post('/product', product);
+}
+
+export function getUsers({commit, state}, {url = null, search = '', perPage, sort_field, sort_direction } = {}) {
+    commit("setUsers", [true]);
+
+    url = url || '/users';
+
+    const params = {
+        perPage: state.users.limit
+    };
+
+    return axiosClient.get(url, {
+        ...params,
+        sort_field, sort_direction, search, perPage
+    })
+    .then(res => {
+        console.log(res.data);
+        commit("setUsers", [false, res.data]);
+    })
+    .catch(err => {
+        console.log(err);
+        commit('setUsers', [false]);
+    })
 }
