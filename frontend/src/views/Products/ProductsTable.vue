@@ -13,7 +13,7 @@
                     <option value="100">100</option>
                 </select>
 
-                <span class="ml-3">Found {{ !products.total ? '0' : products.total }} products</span>
+                <span class="ml-3">Encontrado {{ !products.total ? '0' : products.total }} produtos</span>
             </div>
 
             <div>
@@ -61,7 +61,7 @@
                     <td colspan="6">
                         <Spinner v-if="products.loading" />
                         <p v-else class="text-center py-8 text-gray-700">
-                            Não possui produtos
+                            Não possui produtos cadastrados
                         </p>
                     </td>
                 </tr>
@@ -176,8 +176,8 @@ export default {
 
     data() {
         return {
-            perPage: '',
             search: '',
+            perPage: '',
             sortField: 'updated_at',
             sortDirection: 'desc'
         }
