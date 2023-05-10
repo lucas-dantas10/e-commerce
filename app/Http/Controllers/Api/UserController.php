@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+
 class UserController extends Controller
 {
     /**
@@ -18,13 +19,14 @@ class UserController extends Controller
     {
         $perPage = request('perPage', 10);
         $search = request('search', '');
-        $sortField = request('sortField', 'updated_at');
-        $sortDirection = request('sortDirection', 'asc');
+        $sortField = request('sort_field', 'updated_at');
+        $sortDirection = request('sort_direction', 'desc');
 
         $query = User::query()
             ->where('name', 'like', "%{$search}%")
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
+
 
         return new UserResource($query);
     }
