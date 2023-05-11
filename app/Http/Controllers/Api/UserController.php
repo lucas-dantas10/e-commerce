@@ -27,8 +27,8 @@ class UserController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
-
-        return new UserResource($query);
+        
+        return UserResource::collection($query);
     }
 
     /**

@@ -30,6 +30,7 @@ class ProductController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
+
         return ProductListResource::collection($query);
     }
 

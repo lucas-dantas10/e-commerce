@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Http\JsonResponse;
-use Nette\Utils\DateTime;
+use DateTime;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResponse {
+class UserResource extends JsonResource {
 
     public static $wrap = false;
 
@@ -17,8 +16,8 @@ class UserResource extends JsonResponse {
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     
-    public function toArray(Request $request): array {
-
+    public function toArray($request) 
+    {
         return [
             'id' => $this->id,
             'name' => $this->name,
