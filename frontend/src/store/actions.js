@@ -20,15 +20,15 @@ export function logout({commit}) {
         })
 }
 
-export function getCurrentUser({commit, state}, user) {
-    return axiosClient('/user', user.id)
-        .then(res => {
-            console.log(res.data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}
+// export function getCurrentUser({commit, state}, user) {
+//     return axiosClient('/user', user.id)
+//         .then(res => {
+//             console.log(res.data);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+// }
 
 export function getProducts({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
     commit('setProducts', [true]);
@@ -106,15 +106,15 @@ export function getUsers({commit, state}, {url = null, search = '', perPage, sor
     };
 
     return axiosClient.get(url, {
-        ...params,
-        sort_field, sort_direction, search, perPage
+        params: {
+            ...params,
+            sort_field, sort_direction, search, perPage
+        }
     })
     .then(res => {
-        console.log(res.data);
         commit("setUsers", [false, res.data]);
     })
     .catch(err => {
-        console.log(err);
         commit('setUsers', [false]);
     })
 }

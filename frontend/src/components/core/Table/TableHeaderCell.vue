@@ -1,5 +1,5 @@
 <template>
-    <th @click.prevent="$emit('click')" class="border-b-2 p-2 text-left cursor-pointer bg-gray-100">
+    <th @click.prevent="$emit('sortTable')" class="border-b-2 p-2 text-left cursor-pointer bg-gray-100">
         <div class="flex items-center justify-between">
             <slot></slot>
             <div class="ml-2" v-if="sortField === field">
@@ -26,6 +26,6 @@ export default {
         sortDirection: String
     },
 
-    emits: ['click']
+    emits: ['sortTable']
 }
 </script>

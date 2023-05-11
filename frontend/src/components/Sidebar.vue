@@ -53,7 +53,7 @@
                 <ChartBarIcon class="w-5" />
             </span>
             <span class="text-xs">
-                Reclamações
+                Relatórios
             </span>
         </router-link>
     </div>

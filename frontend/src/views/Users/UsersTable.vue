@@ -26,22 +26,22 @@
         <table class="table-auto w-full">
             <thead>
                 <TableHeaderCell field="id" :sort-field="sortField" :sort-direction="sortDirection"
-                        @click="sortProducts('id')">
+                        @sort-table="sortUsers('id')">
                         ID
                     </TableHeaderCell>
 
                     <TableHeaderCell field="name" :sort-field="sortField" :sort-direction="sortDirection"
-                        @click="sortProducts('name')">
+                        @sort-table="sortUsers('name')">
                         Nome
                     </TableHeaderCell>
 
                     <TableHeaderCell field="email" :sort-field="sortField" :sort-direction="sortDirection"
-                        @click="sortProducts('email')">
+                        @sort-table="sortUsers('email')">
                         Email
                     </TableHeaderCell>
 
                     <TableHeaderCell field="updated_at" :sort-field="sortField" :sort-direction="sortDirection"
-                        @click="sortProducts('updated_at')">
+                        @sort-table="sortUsers('updated_at')">
                         Última atualização
                     </TableHeaderCell>
 
@@ -113,6 +113,24 @@
                 </tr>
             </tbody>
         </table>
+        <div v-if="!users.loading" class="flex justify-between items-center mt-5">
+            <div v-if="users.data.length">
+                Mostrando de {{ users.from }} a {{ users.to }}
+            </div>
+            <nav v-if="users.total > users.limit" class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <a v-for="(link, i) of users.links" :key="i" :disabled="!link.url" href="#"
+                    @click="getForPage($event, link)" aria-current="page"
+                    class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap" :class="[
+                            link.active
+                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
+                            i === 0 ? 'rounded-l-md' : '',
+                            i === users.links.length - 1 ? 'rounded-r-md' : '',
+                            !link.url ? ' bg-gray-100 text-gray-700' : ''
+                        ]" v-html="link.label">
+                </a>
+            </nav>
+        </div>
     </div>
 </template>
 
@@ -140,12 +158,13 @@ export default {
     data() {
         return {
             perPage: '',
+            search: '',
             sortField: 'updated_at',
             sortDirection: 'desc',
-            search: ''
         }
     },
 
+    emits: ['click-edit'],
 
     mounted() {
         this.getUsers();
@@ -160,6 +179,21 @@ export default {
                 sort_field: this.sortField,
                 sort_direction: this.sortDirection
             });
+        },
+        
+        editUser(user) {
+            this.$emit('click-edit', user);
+        },
+
+        sortUsers(field) {
+            if (field === this.sortField) {
+                this.sortDirection === 'desc' ? this.sortDirection = 'asc' : this.sortDirection = 'desc';
+            } else {
+                this.sortField = field;
+                this.sortDirection = 'asc';
+            }
+
+            this.getUsers();
         }
     },
 

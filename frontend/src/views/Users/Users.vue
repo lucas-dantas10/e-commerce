@@ -10,16 +10,20 @@
         </button>
     </div>
 
-    <UsersTable />
+    <UsersTable @click-edit="editUser"/>
+
+    <UsersModal :model-value="showModelProduct" />
 </template>
 
 <script>
 
 import UsersTable from './UsersTable.vue';
+import UsersModal from './UsersModal.vue';
 
 export default {
     components: {
-        UsersTable
+        UsersTable,
+        UsersModal
     },
 
     data() {
@@ -31,6 +35,18 @@ export default {
     methods: {
         showAddNewModal() {
             this.showModelProduct = true;
+        },
+
+        editUser(user) {
+            console.log(user);
+            //  store.dispatch("updateUser", user)
+            //     .then(({data}) => {
+            //         console.log(data)
+            //     })
+            //     .catch(({data}) => {
+            //         console.log(data);
+            //     })
+            // this.showAddNewModal();
         }
     }
 }

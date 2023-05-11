@@ -34,12 +34,12 @@ export function setUsers(state, [loading, data = null]) {
         state.users = {
             ...state.users,
             data: data.data,
-            links: data.links,
-            page: data.current_page,
-            limit: data.per_page,
-            from: data.from,
-            to: data.to,
-            total: data.total,
+            links: data.meta ?.links,
+            page: data.meta.current_page,
+            limit: data.meta.per_page,
+            from: data.meta.from,
+            to: data.meta.to,
+            total: data.meta.total,
         }
     }
 
