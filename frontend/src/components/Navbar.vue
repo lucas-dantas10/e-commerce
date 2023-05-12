@@ -8,7 +8,7 @@
         <Menu as="div" class="relative inline-block text-left">
             <MenuButton class="flex items-center">
                 <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-full w-8 mr-2">
-                <small>{{ currentUser.data.name }}</small>
+                <small>{{ currentUser.name }}</small>
                 <ChevronDownIcon class="h-5 w-5 text-violet-200 hover:text-violet-100" aria-hidden="true" />
             </MenuButton>
 
@@ -85,7 +85,8 @@ export default {
 
     computed: {
         currentUser() {
-            return store.state.user;
+            // console.log(store.state.user.data);
+            return store.state.user.data;
         }
     }
 }
