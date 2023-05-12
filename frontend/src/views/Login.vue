@@ -105,7 +105,7 @@ export default {
 
             store.dispatch('login', this.user)
             .then(() => {
-                router.push({name: 'app.dashboard'});
+                router.push({name: 'app'});
             })
             .catch((response) => {
                 console.log(response);
