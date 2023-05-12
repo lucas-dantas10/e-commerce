@@ -118,3 +118,7 @@ export function getUsers({commit, state}, {url = null, search = '', perPage, sor
         commit('setUsers', [false]);
     })
 }
+
+export function getUser({commit}, idUser) {
+    return axiosClient.get(`/users/${idUser}`);
+}
