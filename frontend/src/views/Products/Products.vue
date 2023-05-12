@@ -34,7 +34,7 @@ export default {
                 description: '',
                 image: '',
                 price: '',
-                published: ''
+                published: false
             },
             productModel: {
                 id: '',
@@ -42,7 +42,7 @@ export default {
                 description: '',
                 image: '',
                 price: '',
-                published: ''
+                published: false
             }
         }
     },
@@ -52,14 +52,16 @@ export default {
         editProduct(p) {
             store.dispatch('getProduct', p.id)
                 .then(res => {
+                    console.log(res.data.image_url);
                     this.productModel = {
                         id: res.data.id,
                         title: res.data.title,
                         description: res.data.description,
                         image: res.data.image_url,
                         price: res.data.price,
-                        published: ''
+                        published: false
                     };
+                    console.log(this.productModel);
                     this.showAddNewModal();
                 })
         },
@@ -73,11 +75,5 @@ export default {
             this.showProductModal = false;
         }
     },
-
-    computed: {
-        products() {
-            return store.state.products;
-        }
-    }
 }
 </script>
