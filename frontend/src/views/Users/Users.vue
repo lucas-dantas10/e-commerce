@@ -12,13 +12,14 @@
 
     <UsersTable @click-edit="editUser"/>
 
-    <UsersModal :model-value="showModelProduct" />
+    <UsersModal :model-value="showModelProduct" :users="usersModel" @close="onModalClose" />
 </template>
 
 <script>
 
 import UsersTable from './UsersTable.vue';
 import UsersModal from './UsersModal.vue';
+import store from '../../store';
 
 export default {
     components: {
@@ -28,7 +29,20 @@ export default {
 
     data() {
         return {
-            showModelProduct: false
+            showModelProduct: false,
+            defaultUser: {
+                id: '',
+                name: '',
+                email: '',
+                password: ''
+            },
+
+            usersModel: {
+                id: '',
+                name: '',
+                email: '',
+                password: ''
+            }
         }
     },
 
@@ -37,16 +51,20 @@ export default {
             this.showModelProduct = true;
         },
 
+        onModalClose() {
+            this.usersModel = {...this.defaultUser};
+            this.showModelProduct = false;
+        },
+
         editUser(user) {
-            console.log(user);
-            //  store.dispatch("updateUser", user)
-            //     .then(({data}) => {
-            //         console.log(data)
-            //     })
-            //     .catch(({data}) => {
-            //         console.log(data);
-            //     })
-            // this.showAddNewModal();
+             store.dispatch("getUser", user.id)
+                .then(({data}) => {
+                    this.usersModel = data;
+                })
+                .catch(({data}) => {
+                    console.log(data);
+                })
+            this.showAddNewModal();
         }
     }
 }
