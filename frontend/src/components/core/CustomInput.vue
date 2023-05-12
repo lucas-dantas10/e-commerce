@@ -7,42 +7,58 @@
                 {{ prepend }}
             </span>
             <template v-if="type === 'select'">
-                <select :name="name" :required="required" :value="modelValue" :class="inputClasses"
+                
+                <select :name="name" :required="required" :value="modelInput" :class="inputClasses"
                     @change="onChange($event.target.value)">
                     <option v-for="option of selectOptions" :value="option.key">{{ option.text }}</option>
                 </select>
             </template>
+
             <template v-else-if="type === 'textarea'">
-                <textarea :name="name" :required="required" :value="modelValue"
-                    @input="$emit('update:modelValue', $event.target.value)" :class="inputClasses"
-                    :placeholder="label"></textarea>
+                <textarea :name="name" :required="required" :value="modelInput"
+                    @input="$emit('update:modelInput', $event.target.value)" :class="inputClasses"
+                    :placeholder="label">
+                </textarea>
             </template>
+
             <template v-else-if="type === 'file'">
-                <input :type="type" :name="name" :required="required" :value="modelValue"
-                    @input="$emit('change', $event.target.files[0])" :class="inputClasses" :placeholder="label" />
+                <input 
+                    :type="type" 
+                    :name="name" 
+                    :required="required" 
+                    :value="modelInput"
+                    @input="$emit('change', $event.target.files[0])" 
+                    :class="inputClasses" 
+                    :placeholder="label" 
+                />
             </template>
+
             <template v-else-if="type === 'checkbox'">
                 <input 
                     :id="id"
                     :name="name" 
                     :type="type" 
-                    :checked="modelValue == '' ?  false : modelValue" 
+                    :checked="modelInput" 
                     :required="required"
-                    @change="$emit('update:modelValue', $event.target.checked)"
+                    @change="$emit('update:modelInput', $event.target.checked)"
                     class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" 
                 />
                 <label :for="id" class="ml-2 block text-sm text-gray-900"> {{ label }} </label>
             </template>
+
             <template v-else>
                 <input 
                     :type="type" 
                     :name="name" 
                     :required="required" 
-                    :value="modelValue"
-                    @input = "$emit('update:modelValue', $event.target.value)" :class="inputClasses" :placeholder="label"
+                    :value="modelInput"
+                    @input = "$emit('update:modelInput', $event.target.value)" 
+                    :class="inputClasses" 
+                    :placeholder="label"
                     step="0.01" 
                 />
             </template>
+
             <span v-if="append"
                 class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                 {{ append }}
@@ -55,7 +71,7 @@
 export default {
     props: {
         label: String,
-        modelValue: [String, Number, File],
+        modelInput: [String, Number, File, Boolean],
         type: {
             type: String,
             default: 'text'
@@ -73,11 +89,11 @@ export default {
         selectOptions: Array
     },
 
-    emits: ['change', 'update:modelValue'],
+    emits: ['change', 'update:modelInput'],
 
     methods: {
         onChange(value) {
-            this.$emit('update:modelValue', value);
+            this.$emit('update:modelInput', value);
             this.$emit('change', value);
         },
     },
