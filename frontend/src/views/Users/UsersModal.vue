@@ -19,7 +19,7 @@
                             <Spinner v-if="loading" class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center" />
                             <header class="py-3 px-4 flex justify-between items-center">
                                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                                    {{ users.id ? `Atualizando Usuário: "${users.title}"` : 'Criando novo Usuário' }}
+                                    {{ userModel.id ? `Atualizando Usuário: "${userModel.name}"` : 'Criando novo Usuário' }}
                                 </DialogTitle>
                                 <button @click="closeModal()"
                                     class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]">
@@ -35,19 +35,19 @@
                                 <div class="bg-white px-4 pt-5 pb-4">
                                     <CustomInput 
                                         class="mb-2"
-                                        v-model:modelInput="users.name"
+                                        v-model:modelInput="userModel.name"
                                         label="Nome do Usuário"
                                     />
 
                                     <CustomInput 
                                         class="mb-2"
-                                        v-model:modelInput="users.email"
+                                        v-model:modelInput="userModel.email"
                                         label="Email do Usuário"
                                     />
 
                                     <CustomInput 
                                         class="mb-2"
-                                        v-model:modelInput="users.password"
+                                        v-model:modelInput="userModel.password"
                                         label="Senha"
                                         type="password"
                                     />
@@ -99,7 +99,7 @@ export default {
     data() {
         return {
             loading: false,
-            userModel: ''
+            userModel: this.users
         }
     },
 
@@ -112,6 +112,15 @@ export default {
         return {
             show
         }
+    },
+
+    updated() {
+        this.userModel = {
+            id: this.users.id,
+            name: this.users.name,
+            email: this.users.email,
+            password: this.users.password
+        };
     },
 
     props: {
@@ -130,6 +139,31 @@ export default {
         closeModal() {
             this.show = false;
             this.$emit('close');
+        },
+
+        onSubmit() {
+            this.loading = true;
+
+            if (this.users.id) {
+                store.dispatch('updateUser', this.userModel)
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.status === 200) {
+                            store.dispatch('getUsers');
+                            this.closeModal();
+                        }
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false);
+            } else {
+                store.dispatch('createUser', this.userModel)
+                    .then(res => {
+                        store.dispatch('getUsers');
+                        this.closeModal();
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false);
+            }
         }
     },
 }

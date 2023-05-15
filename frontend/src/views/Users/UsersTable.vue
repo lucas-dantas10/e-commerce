@@ -157,7 +157,7 @@ export default {
 
     data() {
         return {
-            perPage: '',
+            perPage: 10,
             search: '',
             sortField: 'updated_at',
             sortDirection: 'desc',
@@ -183,6 +183,21 @@ export default {
         
         editUser(user) {
             this.$emit('click-edit', user);
+        },
+
+        deleteUser(user) {
+            if (!confirm("Deseja deletar este usuário?")) {
+                return;
+            }
+
+            store.dispatch("deleteUser", user)
+                .then(res =>  {
+                    this.getUsers();
+                })
+                .catch(err => {
+                    debugger;
+                    console.log(err);
+                });
         },
 
         sortUsers(field) {
