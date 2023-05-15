@@ -33,7 +33,7 @@
                                 <div class="bg-white px-4 pt-5 pb-4">
                                     <CustomInput 
                                         class="mb-2" 
-                                        v-model:modelInput="product.title" 
+                                        v-model:modelInput="products.title" 
                                         label="Título do Produto" 
                                     />
 
@@ -41,21 +41,21 @@
                                         type="file" 
                                         class="mb-2" 
                                         label="Imagem do Produto"
-                                        v-model:modelInput="product.image"
-                                        @change="file => product.image = file" 
+                                        v-model:modelInput="products.image"
+                                        @change="file => products.image = file" 
                                     />
                                     
                                     <CustomInput 
                                         type="textarea" 
                                         class="mb-2" 
-                                        v-model:modelInput="product.description"
+                                        v-model:modelInput="products.description"
                                         label="Descrição" 
                                     />
 
                                     <CustomInput 
                                         type="number" 
                                         class="mb-2" 
-                                        v-model:modelInput="product.price" 
+                                        v-model:modelInput="products.price" 
                                         label="Preço"
                                         prepend="$" 
                                     />
@@ -63,7 +63,7 @@
                                     <CustomInput 
                                         type="checkbox" 
                                         class="mb-2" 
-                                        v-model:modelInput="product.published"
+                                        v-model:modelInput="products.published"
                                         label="Publicar" 
                                     />
                                 </div>
@@ -122,17 +122,16 @@ export default {
         }
     },
 
-    // updated() {
-    //     debugger;
-    //     this.products = {
-    //         id: this.product.id,
-    //         title: this.product.title,
-    //         image: this.product.image_url,
-    //         description: this.product.description,
-    //         price: this.product.price,
-    //         published: this.product.published
-    //     }
-    // },
+    updated() {
+        this.products = {
+            id: this.product.id,
+            title: this.product.title,
+            image: this.product.image_url,
+            description: this.product.description,
+            price: this.product.price,
+            published: this.product.published
+        }
+    },
 
     props: {
         modelValue: Boolean,
@@ -153,7 +152,7 @@ export default {
         onSubmit() {
             this.loading = true;
             if (this.product.id) {
-                store.dispatch('updateProduct', this.product)
+                store.dispatch('updateProduct', this.products)
                     .then(response => {
                         this.loading = false;
                         if (response.status === 200) {
@@ -163,7 +162,7 @@ export default {
                         }
                     })
             } else {
-                store.dispatch('createProduct', this.product)
+                store.dispatch('createProduct', this.products)
                     .then(response => {
                         this.loading = false;
                         if (response.status === 201) {

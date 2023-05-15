@@ -177,7 +177,7 @@ export default {
     data() {
         return {
             search: '',
-            perPage: '',
+            perPage: 10,
             sortField: 'updated_at',
             sortDirection: 'desc'
         }

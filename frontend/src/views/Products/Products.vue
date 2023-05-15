@@ -52,7 +52,6 @@ export default {
         editProduct(p) {
             store.dispatch('getProduct', p.id)
                 .then(res => {
-                    console.log(res.data.image_url);
                     this.productModel = {
                         id: res.data.id,
                         title: res.data.title,
@@ -61,7 +60,6 @@ export default {
                         price: res.data.price,
                         published: false
                     };
-                    console.log(this.productModel);
                     this.showAddNewModal();
                 })
         },
