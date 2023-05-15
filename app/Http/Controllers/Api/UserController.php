@@ -45,14 +45,9 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->validated();
-
-        $data['password'] = \bcrypt($data['password']);
-
-        $emailUsed = User::where('email', '=', $data['email'])->get();
-
-        if ($emailUsed) {
-            return \response("Este email já existe.");
-        }
+        $data['is_admin'] = true;
+        $data['email_verified_at'] = date('Y-m-d H:i:s');
+        $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
 
@@ -80,11 +75,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, int $id)
+    public function update(UpdateUserRequest $request, int $id): UserResource
     {
         $data = $request->validated();
         $user = User::findOrFail($id);
-
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
