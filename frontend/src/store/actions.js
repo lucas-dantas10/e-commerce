@@ -122,3 +122,16 @@ export function getUsers({commit, state}, {url = null, search = '', perPage, sor
 export function getUser({commit}, idUser) {
     return axiosClient.get(`/users/${idUser}`);
 }
+
+export function createUser({commit}, user) {
+    console.log(user);
+    return axiosClient.post('/users', user);
+}
+
+export function updateUser({commit}, user) {
+    return axiosClient.put(`/users/${user.id}`, user);
+}
+
+export function deleteUser({commit}, user) {
+    return axiosClient.delete(`/users/${user.id}`);
+}
