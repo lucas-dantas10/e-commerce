@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue';
 import Products from '../views/Products/Products.vue';
 import Users from '../views/Users/Users.vue';
 import Reports from '../views/Reports/Reports.vue';
+import Orders from '../views/Orders/Orders.vue';
 import NotFound from '../views/NotFound.vue';
 import Login from '../views/Login.vue';
 import RequestPassword from '../views/RequestPassword.vue';
@@ -38,6 +39,13 @@ const routes = [
                 name: 'app.users',
                 component: Users
             },
+
+            {
+                path: 'orders',
+                name: 'app.orders',
+                component: Orders
+            },
+
             {
                 path: 'reports',
                 name: 'reports.orders',
