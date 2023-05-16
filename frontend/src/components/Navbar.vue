@@ -67,10 +67,6 @@ export default {
 
     emits: ['toggle-sidebar'],
 
-    mounted() {
-        this.currentUser;
-    },
-
     methods: {
         logout() {
             store.dispatch('logout')
@@ -85,7 +81,6 @@ export default {
 
     computed: {
         currentUser() {
-            // console.log(store.state.user.data);
             return store.state.user.data;
         }
     }

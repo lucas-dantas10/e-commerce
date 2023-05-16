@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-full bg-gray-200 flex">
+    <div v-if="currentUser.id" class="min-h-full bg-gray-200 flex">
 
         <Sidebar :class="{'-ml-[200px]' : !sidebarOpened}" />
 
@@ -17,6 +17,7 @@
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Navbar from '../components/Navbar.vue';
+import store from '../store';
 
 export default {
     components: {
@@ -30,9 +31,29 @@ export default {
         }
     },
 
+    mounted() {
+        store.dispatch('getCurrentUser');
+        this.updateSidebarState();
+        window.addEventListener('resize', this.updateSidebarState);
+    },
+
+    unmounted() {
+        window.removeEventListener('resize', this.updateSidebarState);
+    },
+
     methods: {
         toggleSidebar() {
             this.sidebarOpened = !this.sidebarOpened;
+        },
+
+        updateSidebarState() {
+            this.sidebarOpened = window.outerWidth > 768;
+        }
+    },
+
+    computed: {
+        currentUser() {
+            return store.state.user.data;
         }
     }
 }
