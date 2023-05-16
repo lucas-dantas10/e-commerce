@@ -1,10 +1,17 @@
 import axiosClient from '../axios.js';
-import state from './state.js';
+
+export function getCurrentUser({commit}, data) {
+    return axiosClient.get('/user', data)
+      .then(({data}) => {
+        commit('setUser', data);
+        return data;
+      })
+}
 
 export function login({commit}, data) {
     return axiosClient.post('/login', data)
             .then(({data}) => {
-                commit("setUser", data.user.original);
+                commit("setUser", data.user);
                 commit("setToken", data.token);
                 return data;
             })
@@ -19,16 +26,6 @@ export function logout({commit}) {
       
         })
 }
-
-// export function getCurrentUser({commit, state}, user) {
-//     return axiosClient('/user', user.id)
-//         .then(res => {
-//             console.log(res.data);
-//         })
-//         .catch(err => {
-//             console.log(err);
-//         })
-// }
 
 export function getProducts({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
     commit('setProducts', [true]);
