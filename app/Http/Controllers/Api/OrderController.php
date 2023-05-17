@@ -23,7 +23,7 @@ class OrderController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
 
-        // return
+        return $query;
     }
 
     /**
