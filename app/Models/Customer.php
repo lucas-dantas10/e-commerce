@@ -36,7 +36,7 @@ class Customer extends Model
         return $this->_getAddresses()->where('type', '=', AddressType::ShippingAddresses->value);
     }
 
-    public function billingAddresses()
+    public function billingAddresses(): HasOne
     {
         return $this->_getAddresses()->where('type', '=', AddressType::BillingAddresses->value);
     }
