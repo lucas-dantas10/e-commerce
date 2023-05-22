@@ -4,7 +4,7 @@ import AppLayout from '../components/AppLayout.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Products from '../views/Products/Products.vue';
 import Users from '../views/Users/Users.vue';
-import Customers from '../views/Customers/Customers.vue';
+import Customers from '../views/Customers/Customer.vue';
 import Reports from '../views/Reports/Reports.vue';
 import Orders from '../views/Orders/Orders.vue';
 import NotFound from '../views/NotFound.vue';
