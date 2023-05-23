@@ -43,7 +43,7 @@
                 <UserGroupIcon class="w-5" />
             </span>
             <span class="text-xs">
-                Customers
+                Clientes
             </span>
         </router-link>
 
