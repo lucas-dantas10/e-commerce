@@ -97,7 +97,7 @@ export function createProduct({commit}, product) {
 
 // ****** USERS ******
 
-export function getUsers({commit, state}, {url = null, search = '', perPage, sort_field, sort_direction } = {}) {
+export function getUsers({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction } = {}) {
     commit("setUsers", [true]);
 
     url = url || '/users';
@@ -109,7 +109,7 @@ export function getUsers({commit, state}, {url = null, search = '', perPage, sor
     return axiosClient.get(url, {
         params: {
             ...params,
-            sort_field, sort_direction, search, perPage
+            sort_field, sort_direction, search, per_page
         }
     })
     .then(res => {
@@ -138,3 +138,24 @@ export function deleteUser({commit}, user) {
 }
 
 // ****** CUSTOMERS ******
+
+export function getCustomers({commit, state}, {url = null, search = '', per_page, sort_direction, sort_field} = {}) {
+    commit('setCustomers', [true]);
+
+    url = url || '/customer';
+
+    const params = {
+        perPage: state.customers.limit 
+    };
+
+    return axiosClient(url, {
+        params: {
+            ...params,
+            sort_direction, sort_field, per_page, search
+        }
+    })
+    .then(({data}) => {
+        commit('setCustomers', [false, data]);
+    })
+    .catch(err => console.log(err));
+}
