@@ -22,15 +22,13 @@ class CustomerController extends Controller
         $sortDirection = request('sort_direction', 'desc');
 
         $query = Customer::query()
-            ->with('user')
-            ->orderBy($sortField, $sortDirection);
-
-        // \dd($query->get());
+            ->join('users', 'customers.id', 'users.id')
+            ->orderBy("customers.{$sortField}", $sortDirection);
 
         if ($search) {
             $query
                 ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
-                ->join('users', 'customers.user_id', 'users.id')
+                ->join('users', 'customers.user_id', '=', 'users.id')
                 ->orWhere('users.email', 'like', "%{$search}%")
                 ->orWhere('customers.phone', 'like', "%{$search}%");
         }
