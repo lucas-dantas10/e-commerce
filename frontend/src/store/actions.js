@@ -112,8 +112,8 @@ export function getUsers({commit, state}, {url = null, search = '', per_page, so
             sort_field, sort_direction, search, per_page
         }
     })
-    .then(res => {
-        commit("setUsers", [false, res.data]);
+    .then(({data}) => {
+        commit("setUsers", [false, data]);
     })
     .catch(err => {
         commit('setUsers', [false]);
@@ -155,6 +155,7 @@ export function getCustomers({commit, state}, {url = null, search = '', per_page
         }
     })
     .then(({data}) => {
+        console.log(data);
         commit('setCustomers', [false, data]);
     })
     .catch(err => console.log(err));
