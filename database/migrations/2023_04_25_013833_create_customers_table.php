@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'user_id')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone')->nullable();
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'created_by');
             $table->foreignIdFor(User::class, 'updated_by');
             $table->timestamps();
+            
         });
     }
 
