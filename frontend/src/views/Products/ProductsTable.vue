@@ -206,8 +206,6 @@ export default {
             }
 
             this.getProducts(link.url);
-
-
         },
 
         sortProducts(field) {

@@ -4,7 +4,7 @@
             <div class="flex items-center">
                 <span class="whitespace-nowrap mr-3">Por Página</span>
 
-                <select @change="getUsers(null)" v-model="perPage"
+                <select @change="getUsers(null)" v-model.number="perPage"
                     class="appearance-none relative block w-24 px-3 py-2 border border-gray-500 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -13,7 +13,7 @@
                     <option value="100">100</option>
                 </select>
 
-                <span class="ml-3">Encontrado {{ !users.total ? '0' : users.total }} produtos</span>
+                <span class="ml-3">Encontrado {{ !users.total ? '0' : users.total }} usuários</span>
             </div>
 
             <div>
@@ -119,7 +119,7 @@
             </div>
             <nav v-if="users.total > users.limit" class="relative z-0 inline-flex justify-center rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                 <a v-for="(link, i) of users.links" :key="i" :disabled="!link.url" href="#"
-                    @click="getForPage($event, link)" aria-current="page"
+                    @click.prevent="getForPage($event, link)" aria-current="page"
                     class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap" :class="[
                             link.active
                                 ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
@@ -209,6 +209,14 @@ export default {
             }
 
             this.getUsers();
+        },
+
+        getForPage(event, link) {
+            if (!link.url || link.active) {
+                return;
+            }
+
+            this.getUsers(link.url);
         }
     },
 

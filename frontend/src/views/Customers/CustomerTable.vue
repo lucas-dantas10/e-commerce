@@ -201,7 +201,7 @@ export default {
 
     computed: {
         customers() {
-            console.log(store.state.customers);
+            // console.log(store.state.customers);
             return store.state.customers;
         }
     }
