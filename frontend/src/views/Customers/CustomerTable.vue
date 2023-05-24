@@ -17,7 +17,7 @@
             </div>
 
             <div>
-                <input type="text" placeholder="Procurar Clientes"
+                <input type="text" placeholder="Procurar Cliente"
                     class="py-2 px-4 border border-gray-300 placeholder-gray-500 text-sm rounded-md ">
             </div>
         </div>
@@ -79,7 +79,7 @@
                         {{ customer.phone }}
                     </td>
                     <td class="border-b p-2">
-                        {{ customer.status }}
+                        {{ customer.status ? 'Ativo' : 'Inativo' }}
                     </td>
                     <td class="border-b p-2">
                         {{ customer.created_at }}
@@ -89,7 +89,7 @@
                             <div>
                                 <MenuButton
                                     class="inline-flex items-center w-full justify-center rounded-full h-10 bg-black bg-opacity-0 text-sm font-medium text-white hover:bg-opacity-5 focus:bg-opacity-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                                    <DotsVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
+                                    <EllipsisVerticalIcon class="h-5 w-5 text-indigo-500" aria-hidden="true" />
                                 </MenuButton>
                             </div>
 
@@ -139,7 +139,7 @@ import TableHeaderCell from "../../components/core/Table/TableHeaderCell.vue";
 import store from "../../store";
 import Spinner from "../../components/core/Spinner.vue";
 import {Menu, MenuItems, MenuButton, MenuItem} from '@headlessui/vue';
-import { DotsVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
 
 export default {
 
@@ -164,7 +164,7 @@ export default {
         MenuItems,
         Spinner,
         PencilIcon,
-        DotsVerticalIcon,
+        EllipsisVerticalIcon,
         TrashIcon
     },
 
@@ -201,6 +201,7 @@ export default {
 
     computed: {
         customers() {
+            console.log(store.state.customers);
             return store.state.customers;
         }
     }

@@ -25,12 +25,14 @@ class CustomerController extends Controller
             ->with('user')
             ->orderBy($sortField, $sortDirection);
 
+        // \dd($query->get());
+
         if ($search) {
             $query
                 ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
-                ->join('users', 'customer.user_id', 'user.id')
+                ->join('users', 'customers.user_id', 'users.id')
                 ->orWhere('users.email', 'like', "%{$search}%")
-                ->orWhere('customer.phone', 'like', "%{$search}%");
+                ->orWhere('customers.phone', 'like', "%{$search}%");
         }
 
         $paginator = $query->paginate($perPage);
