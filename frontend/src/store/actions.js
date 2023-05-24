@@ -155,7 +155,6 @@ export function getCustomers({commit, state}, {url = null, search = '', per_page
         }
     })
     .then(({data}) => {
-        console.log(data);
         commit('setCustomers', [false, data]);
     })
     .catch(err => console.log(err));
