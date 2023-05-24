@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $perPage = request('perPage', 10);
+        $perPage = request('per_page', 10);
         $search = request('search', '');
         $sortField = request('sort_field', 'updated_at');
         $sortDirection = request('sort_direction', 'desc');
