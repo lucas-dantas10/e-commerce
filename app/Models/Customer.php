@@ -12,24 +12,23 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $foreignKey = 'user_id';
+    protected $primaryKey = 'user_id';
 
     protected $fillables = [
         'first_name', 
-        'last_name', 
-        'email',
+        'last_name',
         'phone', 
         'status',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'customer_id', $this->foreignKey);
+        return $this->belongsTo(User::class);
     }
 
     private function _getAddresses(): HasOne
     {
-        return $this->hasOne(CustomerAddress::class, 'customer_id', $this->foreignKey);
+        return $this->hasOne(CustomerAddress::class, 'customer_id', 'user_id');
     }
 
     public function shippingAddresses(): HasOne
