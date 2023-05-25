@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
@@ -26,9 +27,9 @@ class CustomerController extends Controller
             ->orderBy("customers.{$sortField}", $sortDirection);
 
         if ($search) {
-            $query
+            Customer::query()->with('users')
                 ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
-                ->join('users', 'customers.user_id', '=', 'users.id')
+                ->join('users', 'customers.id', '=', 'users.id')
                 ->orWhere('users.email', 'like', "%{$search}%")
                 ->orWhere('customers.phone', 'like', "%{$search}%");
         }
@@ -74,7 +75,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CustomerRequest $request, string $id)
     {
         //
     }
