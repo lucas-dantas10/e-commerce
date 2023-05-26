@@ -159,3 +159,11 @@ export function getCustomers({commit, state}, {url = null, search = '', per_page
     })
     .catch(err => console.log(err));
 }
+
+export function updateCustomer({commit, state}, customer) {
+    return axiosClient.put(`/customer/${customer.id}`, customer);
+}
+
+export function deleteCustomer({commit}, customer) {
+    return axiosClient.delete(`/customer/${customer.id}`);
+}
