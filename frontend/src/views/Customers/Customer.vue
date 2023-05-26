@@ -9,6 +9,7 @@
 <script>
 
 import CustomerTable from './CustomerTable.vue';
+import store from '../../store';
 
 export default {
     components: {
@@ -17,6 +18,11 @@ export default {
     methods: {
         edit(customer) {
             // edit with store.dispatch
+            store.dispatch('updateCustomer', customer)
+                .then(({data}) => {
+                    console.log(data);
+                })
+                .catch(({response}) => console.log(response.data));
         }
     }
 }
