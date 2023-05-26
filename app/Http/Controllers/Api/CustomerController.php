@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\AddressType;
+use App\Enums\CustomerStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use App\Models\CustomerAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -75,9 +78,34 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CustomerRequest $request, string $id)
+    public function update(CustomerRequest $request, int $id)
     {
-        //
+        $customerData = $request->validated();
+        $customerData['updated_by'] = $request->user()->id;
+        $customerData['status'] = $customerData['status'] ? CustomerStatus::Active->value : CustomerStatus::Disabled->value;
+        $shippingData = $customerData['shippingAddress'];
+        $billingData = $customerData['billingData'];
+        
+        $customer = Customer::findOrFail($id);
+        $customer->update($customerData);
+
+        if ($customer->shippingAddress) {
+            $customer->shippingAddress->update($shippingData);
+        } else {
+            $shippingData['customer_id'] = $customer->id;
+            $shippingData['type'] = AddressType::ShippingAddresses->value;
+            CustomerAddress::create($shippingData);
+        }
+
+        if ($customer->billingAddress) {
+            $customer->billingAddress->update($billingData);
+        } else {
+            $billingData['customer_id'] = $customer->id;
+            $billingData['type'] = AddressType::BillingAddresses->value;
+            CustomerAddress::create($billingData);
+        }
+
+        return new CustomerRequest($customer);
     }
 
     /**
