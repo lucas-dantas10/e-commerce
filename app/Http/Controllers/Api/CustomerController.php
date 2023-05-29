@@ -63,7 +63,14 @@ class CustomerController extends Controller
      */
     public function show(int $id)
     {
-        $customer = Customer::findOrFail($id);
+        // $customer = Customer::findOrFail($id);
+        $customer = Customer::query()
+            ->join('users', 'customers.id', 'users.id')
+            ->where('customers.id', '=', "{$id}")
+            ->first();
+
+        // \dd($customer);
+
         return new CustomerResource($customer);
     }
 
