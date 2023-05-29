@@ -160,6 +160,10 @@ export function getCustomers({commit, state}, {url = null, search = '', per_page
     .catch(err => console.log(err));
 }
 
+export function getCustomer({commit}, idCustomer) {
+    return axiosClient.get(`/customer/${idCustomer}`);
+}
+
 export function updateCustomer({commit, state}, customer) {
     return axiosClient.put(`/customer/${customer.id}`, customer);
 }
