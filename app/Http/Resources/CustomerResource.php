@@ -17,14 +17,11 @@ class CustomerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // $shipping = $this->shipping;
-        // $billing = $this->billing;
-
         return [
-            'id' => $this->id,
+            'id' => $this->user_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'email' => $this->email,
+            'email' => $this->user->email,
             'phone' => $this->phone,
             'status' => $this->status,
             'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
