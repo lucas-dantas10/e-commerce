@@ -26,19 +26,18 @@ class CustomerController extends Controller
         $sortDirection = request('sort_direction', 'desc');
 
         $query = Customer::query()
-            ->join('users', 'customers.id', 'users.id')
+            ->with('user')
             ->orderBy("customers.{$sortField}", $sortDirection);
 
         if ($search) {
-            Customer::query()->with('users')
-                ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
-                ->join('users', 'customers.id', '=', 'users.id')
-                ->orWhere('users.email', 'like', "%{$search}%")
-                ->orWhere('customers.phone', 'like', "%{$search}%");
+                $query
+                    ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', "%{$search}%")
+                    ->join('users', 'customers.user_id', '=', 'users.id')
+                    ->orWhere('users.email', 'like', "%{$search}%")
+                    ->orWhere('customers.phone', 'like', "%{$search}%");
         }
 
         $paginator = $query->paginate($perPage);
-
         return CustomerListResource::collection($paginator);
     }
 
@@ -63,13 +62,7 @@ class CustomerController extends Controller
      */
     public function show(int $id)
     {
-        // $customer = Customer::findOrFail($id);
-        $customer = Customer::query()
-            ->join('users', 'customers.id', 'users.id')
-            ->where('customers.id', '=', "{$id}")
-            ->first();
-
-        // \dd($customer);
+        $customer = Customer::findOrFail($id)->with('user')->first();
 
         return new CustomerResource($customer);
     }
