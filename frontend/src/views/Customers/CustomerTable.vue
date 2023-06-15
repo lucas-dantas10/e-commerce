@@ -109,7 +109,7 @@
                                         ]">
                                             <PencilIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
                                                 aria-hidden="true" />
-                                            Edit
+                                            Editar
                                         </router-link>
                                         </MenuItem>
                                         <MenuItem v-slot="{ active }">
@@ -119,7 +119,7 @@
                                         ]" @click="deleteCustomer(customer)">
                                             <TrashIcon :active="active" class="mr-2 h-5 w-5 text-indigo-400"
                                                 aria-hidden="true" />
-                                            Delete
+                                            Deletar
                                         </button>
                                         </MenuItem>
                                     </div>
