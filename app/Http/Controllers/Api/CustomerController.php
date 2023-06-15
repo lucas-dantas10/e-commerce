@@ -62,7 +62,7 @@ class CustomerController extends Controller
      */
     public function show(int $id)
     {
-        $customer = Customer::findOrFail($id)->with('user')->first();
+        $customer = Customer::findOrFail($id)->with('user', 'shippingAddresses', 'billingAddresses')->first();
 
         return new CustomerResource($customer);
     }
@@ -105,7 +105,7 @@ class CustomerController extends Controller
             CustomerAddress::create($billingData);
         }
 
-        return new CustomerRequest($customer);
+        return new CustomerResource($customer);
     }
 
     /**
