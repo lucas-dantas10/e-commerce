@@ -14,17 +14,17 @@
                         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Endereço de Cobrança</h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <CustomInput v-model="customer.billingAddress.address1" label="Address 1" />
-                            <CustomInput v-model="customer.billingAddress.address2" label="Address 2" />
-                            <CustomInput v-model="customer.billingAddress.city" label="City" />
-                            <CustomInput v-model="customer.billingAddress.zipcode" label="Zip Code" />
+                            <CustomInput v-model:modelInput="customer.billingAddress.address1" label="Address 1" />
+                            <CustomInput v-model:modelInput="customer.billingAddress.address2" label="Address 2" />
+                            <CustomInput v-model:modelInput="customer.billingAddress.city" label="City" />
+                            <CustomInput v-model:modelInput="customer.billingAddress.zipcode" label="Zip Code" />
 
                             <CustomInput type="select" :select-options="countries"
-                                v-model="customer.billingAddress.country_code" label="Country" />
-                            <CustomInput v-if="!customer.billingAddress.state" v-model="customer.billingAddress.state"
+                                v-model:modelInput="customer.billingAddress.country_code" label="Country" />
+                            <CustomInput v-if="!customer.billingAddress.state" v-model:modelInput="customer.billingAddress.state"
                                 label="State" />
                             <CustomInput v-else type="select" :select-options="billingStateOptions"
-                                v-model="customer.billingAddress.state" label="State" />
+                                v-model:modelInput="customer.billingAddress.state" label="State" />
                         </div>
                     </div>
 
@@ -32,16 +32,16 @@
                         <h2 class="text-xl font-semibold mt-6 pb-2 border-b border-gray-300">Endereço de Envio</h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <CustomInput v-model="customer.shippingAddress.address1" label="Address 1" />
-                            <CustomInput v-model="customer.shippingAddress.address2" label="Address 2" />
-                            <CustomInput v-model="customer.shippingAddress.city" label="City" />
-                            <CustomInput v-model="customer.shippingAddress.zipcode" label="Zip Code" />
+                            <CustomInput v-model:modelInput="customer.shippingAddress.address1" label="Address 1" />
+                            <CustomInput v-model:modelInput="customer.shippingAddress.address2" label="Address 2" />
+                            <CustomInput v-model:modelInput="customer.shippingAddress.city" label="City" />
+                            <CustomInput v-model:modelInput="customer.shippingAddress.zipcode" label="Zip Code" />
                             <CustomInput type="select" :select-options="countries"
-                                v-model="customer.shippingAddress.country_code" label="Country" />
-                            <CustomInput v-if="!customer.shippingAddress.state" v-model="customer.shippingAddress.state"
+                                v-model:modelInput="customer.shippingAddress.country_code" label="Country" />
+                            <CustomInput v-if="!customer.shippingAddress.state" v-model:modelInput="customer.shippingAddress.state"
                                 label="State" />
                             <CustomInput v-else type="select" :select-options="shippingStateOptions"
-                                v-model="customer.shippingAddress.state" label="State" />
+                                v-model:modelInput="customer.shippingAddress.state" label="State" />
                         </div>
                     </div>
                 </div>
@@ -80,6 +80,7 @@ export default {
     mounted() {
         store.dispatch('getCustomer', this.$route.params.id)
             .then(({ data }) => {
+                console.log(data);
                 this.title = `Atualizando Cliente "${data.first_name} ${data.last_name}"`;
                 this.customer = data;
             })
