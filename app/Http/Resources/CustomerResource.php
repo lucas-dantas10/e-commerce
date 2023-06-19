@@ -19,7 +19,6 @@ class CustomerResource extends JsonResource
     {
         $billing = $this->billingAddresses;
         $shipping = $this->shippingAddresses;
-        
         return [
             'id' => $this->user_id,
             'first_name' => $this->first_name,
