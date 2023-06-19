@@ -21,8 +21,10 @@
 
                             <CustomInput type="select" :select-options="countries"
                                 v-model:modelInput="customer.billingAddress.country_code" label="Country" />
-                            <CustomInput v-if="!customer.billingAddress.state" v-model:modelInput="customer.billingAddress.state"
+
+                            <CustomInput v-if="!billingCountry.states" v-model:modelInput="customer.billingAddress.state"
                                 label="State" />
+                                
                             <CustomInput v-else type="select" :select-options="billingStateOptions"
                                 v-model:modelInput="customer.billingAddress.state" label="State" />
                         </div>
@@ -36,10 +38,13 @@
                             <CustomInput v-model:modelInput="customer.shippingAddress.address2" label="Address 2" />
                             <CustomInput v-model:modelInput="customer.shippingAddress.city" label="City" />
                             <CustomInput v-model:modelInput="customer.shippingAddress.zipcode" label="Zip Code" />
+
                             <CustomInput type="select" :select-options="countries"
                                 v-model:modelInput="customer.shippingAddress.country_code" label="Country" />
-                            <CustomInput v-if="!customer.shippingAddress.state" v-model:modelInput="customer.shippingAddress.state"
+
+                            <CustomInput v-if="!shippingCountry.states" v-model:modelInput="customer.shippingAddress.state"
                                 label="State" />
+
                             <CustomInput v-else type="select" :select-options="shippingStateOptions"
                                 v-model:modelInput="customer.shippingAddress.state" label="State" />
                         </div>
@@ -48,7 +53,7 @@
             </div>
 
             <footer class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                <button type="submit" class="mt-3 w-full inline-flex justify-center bg-indigo-600 rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
                            hover:bg-indigo-700 focus:ring-indigo-500">
                     Enviar
                 </button>
@@ -80,13 +85,44 @@ export default {
     mounted() {
         store.dispatch('getCustomer', this.$route.params.id)
             .then(({ data }) => {
-                console.log(data);
                 this.title = `Atualizando Cliente "${data.first_name} ${data.last_name}"`;
                 this.customer = data;
             })
             .catch(({ response }) => console.log(response));
 
     },
+
+    // methods: {
+    //     onSubmit() {
+
+    //     }
+    // },
+
+    computed: {
+        countries() {
+            return store.state.countries.map(c => ({key: c.code, text: c.name}));
+        },
+
+        billingCountry() {
+            return store.state.countries.find(c => c.code === this.customer.billingAddress.country_code);
+        },
+
+        billingStateOptions() {
+            if (!this.billingCountry || !this.billingCountry.states) return [];
+
+            return Object.entries(this.billingCountry.states).map(c => ({key: c[0], text: c[1]}));
+        },
+
+        shippingCountry() {
+            return store.state.countries.find(c => c.code === this.customer.shippingAddress.country_code);
+        },
+
+        shippingStateOptions() {
+            if (!this.shippingCountry || !this.shippingCountry.states) return [];
+
+            return Object.entries(this.shippingCountry.states).map(c => ({key: c[0], text: c[1]}));
+        }
+    }
 }
 
 </script>
