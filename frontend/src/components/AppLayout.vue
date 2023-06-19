@@ -33,6 +33,7 @@ export default {
 
     mounted() {
         store.dispatch('getCurrentUser');
+        store.dispatch('getCountries');
         this.updateSidebarState();
         window.addEventListener('resize', this.updateSidebarState);
     },
