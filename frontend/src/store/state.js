@@ -35,5 +35,7 @@ export default {
         page: 1,
         limit: null,
         total: null
-    }
+    },
+
+    countries: [],
 }
