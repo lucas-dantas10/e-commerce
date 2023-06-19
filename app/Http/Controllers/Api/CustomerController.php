@@ -6,8 +6,10 @@ use App\Enums\AddressType;
 use App\Enums\CustomerStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
+use App\Http\Resources\CountryResource;
 use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
+use App\Models\Country;
 use App\Models\Customer;
 use App\Models\CustomerAddress;
 use Illuminate\Http\Request;
@@ -68,14 +70,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(CustomerRequest $request, int $id)
@@ -118,5 +112,11 @@ class CustomerController extends Controller
         $customer->delete();
 
         return response()->noContent();
+    }
+
+    public function countries() {
+        $query = Country::query()->orderBy('name', 'asc')->get();
+
+        return CountryResource::collection($query);
     }
 }
