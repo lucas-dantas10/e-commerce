@@ -22,7 +22,7 @@
                             <CustomInput type="select" :select-options="countries"
                                 v-model:modelInput="customer.billingAddress.country_code" label="Country" />
 
-                            <CustomInput v-if="!billingCountry.states" v-model:modelInput="customer.billingAddress.state"
+                            <CustomInput v-if="!billingCountry.state" v-model:modelInput="customer.billingAddress.state"
                                 label="State" />
                                 
                             <CustomInput v-else type="select" :select-options="billingStateOptions"
@@ -42,7 +42,7 @@
                             <CustomInput type="select" :select-options="countries"
                                 v-model:modelInput="customer.shippingAddress.country_code" label="Country" />
 
-                            <CustomInput v-if="!shippingCountry.states" v-model:modelInput="customer.shippingAddress.state"
+                            <CustomInput v-if="!shippingCountry.state" v-model:modelInput="customer.shippingAddress.state"
                                 label="State" />
 
                             <CustomInput v-else type="select" :select-options="shippingStateOptions"
@@ -92,11 +92,17 @@ export default {
 
     },
 
-    // methods: {
-    //     onSubmit() {
-
-    //     }
-    // },
+    methods: {
+        onSubmit() {
+            this.$store.dispatch('updateCustomer', this.customer);
+                // .then(({data}) => {
+                //     console.log(data);
+                // })
+                // .catch(({response}) => {
+                //     console.log('catch')
+                // }) 
+        }
+    },
 
     computed: {
         countries() {
