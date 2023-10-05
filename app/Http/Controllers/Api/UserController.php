@@ -7,36 +7,21 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\User\UserService;
 use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function __construct(
+        protected UserService $userService
+    )
+    {}
+
     public function index()
     {
-        $perPage = request('per_page', 10);
-        $search = request('search', '');
-        $sortField = request('sort_field', 'updated_at');
-        $sortDirection = request('sort_direction', 'desc');
-
-        $query = User::query()
-            ->where('name', 'like', "%{$search}%")
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
-
-        
-        return UserResource::collection($query);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->userService->filterByUsers();
     }
 
     /**
@@ -62,14 +47,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         return new UserResource($user);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
