@@ -12,17 +12,25 @@
         </div>
 
     </div>
+    <div v-else class="min-h-full bg-gray-200 flex items-center justify-center">
+        <Spinner />
+    </div>
+    <Toast />
 </template>
 
 <script>
 import Sidebar from '../components/Sidebar.vue';
 import Navbar from '../components/Navbar.vue';
 import store from '../store';
+import Toast from './core/Toast.vue';
+import Spinner from './core/Spinner.vue';
 
 export default {
     components: {
         Sidebar,
-        Navbar
+        Navbar,
+        Toast,
+        Spinner
     },
 
     data() {

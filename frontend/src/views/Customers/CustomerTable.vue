@@ -79,7 +79,13 @@
                         {{ customer.phone }}
                     </td>
                     <td class="border-b p-2">
-                        {{ customer.status ? 'Ativo' : 'Inativo' }}
+                        <p class="text-white py-0.5 px-1 rounded" :class="{
+                            'bg-emerald-500': customer.status === '1',
+                            'bg-orange-400': customer.status === '2'
+                        }"
+                        >
+                            {{ customer.status ? 'Ativo' : 'Inativo' }}
+                        </p>                        
                     </td>
                     <td class="border-b p-2">
                         {{ customer.created_at }}
