@@ -38,4 +38,10 @@ export default {
     },
 
     countries: [],
+
+    toast: {
+        show: false,
+        message: '',
+        delay: 5000
+    }
 }
