@@ -19,6 +19,8 @@ class Customer extends Model
         'last_name',
         'phone', 
         'status',
+        'created_by',
+        'updated_by'
     ];
 
     public function user(): BelongsTo
@@ -26,10 +28,6 @@ class Customer extends Model
         return $this->belongsTo(User::class);
     }
 
-    private function _getAddresses(): HasOne
-    {
-        return $this->hasOne(CustomerAddress::class, 'customer_id', 'user_id');
-    }
 
     public function shippingAddresses(): HasOne
     {
@@ -39,5 +37,10 @@ class Customer extends Model
     public function billingAddresses(): HasOne
     {
         return $this->_getAddresses()->where('type', '=', AddressType::BillingAddresses->value);
+    }
+
+    private function _getAddresses(): HasOne
+    {
+        return $this->hasOne(CustomerAddress::class, 'customer_id', 'user_id');
     }
 }
