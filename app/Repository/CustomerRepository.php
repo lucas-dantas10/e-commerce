@@ -7,13 +7,16 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerRepository extends AbstractRepository
 {
+    protected static $model = Customer::class;
+
     public function filterCustomers(
         string $search,
         string $sortField,
         string $sortDirection,
         int $perPage
     ) {
-        $query = Customer::query()
+        
+        $query = self::loadModel()::query()
             ->with('user')
             ->orderBy("customers.{$sortField}", $sortDirection);
 
