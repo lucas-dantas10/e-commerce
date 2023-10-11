@@ -17,7 +17,7 @@ class CustomerRepositoryTest extends TestCase
      */
     public static function repository(): RepositoryInterface
     {
-        return new CustomerRepository();
+        return new CustomerRepository;
     }
 
     public function test_get_all_customers(): void
@@ -62,7 +62,7 @@ class CustomerRepositoryTest extends TestCase
             'updated_by' => 1,
             'created_at' => now()
         ]);
-        $result = $customer->update(['first_name' => 'teste update']);
+        $result = self::repository()->update($customer->user_id, ['first_name' => 'teste update']);
         $this->assertEquals($result, 1);
     }
 
@@ -78,7 +78,7 @@ class CustomerRepositoryTest extends TestCase
     public function test_delete_customer(): void 
     {
         $customer = Customer::query()->orderByDesc('user_id')->first(['user_id']);
-        $result = Customer::query()->delete($customer->user_id);
+        $result = self::repository()->delete($customer->user_id);
 
         $this->assertNotEmpty($result);
     }
