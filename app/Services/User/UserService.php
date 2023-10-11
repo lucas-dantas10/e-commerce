@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Repository\UserRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
@@ -35,5 +36,18 @@ class UserService
         $user = $this->userRepository->create($data);
 
         return new UserResource($user);
+    }
+
+    public function updateUser(array $data, $id): User
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
+        return $user;
     }
 }
