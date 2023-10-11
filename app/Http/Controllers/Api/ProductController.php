@@ -7,29 +7,21 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Exception;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
+use App\Services\Product\ProductService;
 
 class ProductController extends Controller
 {
+
+    public function __construct(
+        protected ProductService $productService
+    ) {  }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $perPage = request('per_page', 10);
-        $search = request('search', '');
-        $sortField = request('sort_field', 'updated_at');
-        $sortDirection = request('sort_direction', 'desc');
-
-        $query = Product::query()
-            ->where('title', 'like', "%{$search}%")
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
-
+        $query = $this->productService->filterByProducts();
 
         return ProductListResource::collection($query);
     }
@@ -48,19 +40,8 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        $data['created_by'] = $request->user()->id;
-        $data['updated_by'] = $request->user()->id;
-
-        $image = $data['image'] ?? null;
-
-        if ($image) {
-            $relativePath = $this->saveImage($image);
-            $data['image'] = URL::to(Storage::url($relativePath));
-            $data['image_mime'] = $image->getClientMimeType();
-            $data['image_size'] = $image->getSize();
-        }
-
-        $product = Product::create($data);
+        
+        $product = $this->productService->saveProduct($data, $request);
 
         return new ProductResource($product);
     }
@@ -88,27 +69,10 @@ class ProductController extends Controller
     public function update(ProductRequest $request, int $id)
     {
         $data = $request->validated();
-        $data['updated_by'] = $request->user()->id;
-        $product = Product::findOrFail($id);
-
-        $image = $data['image'] ?? null;
-
-        if ($image) {
-            $relativePath = $this->saveImage($image);
-            $data['image'] = URL::to(Storage::url($relativePath));
-            $data['image_mime'] = $image->getClientMimeType();
-            $data['image_size'] = $image->getSize();
-
-            if ($product->image) {
-                Storage::deleteDirectory(dirname($product->image));
-            }
-        }
-
-        $product->update($data);
+        
+        $product = $this->productService->updateProduct($data, $request, $id);
 
         return new ProductResource($product);
-
-        
     }
 
     /**
@@ -120,21 +84,5 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->noContent();
-    }
-
-    public function saveImage(UploadedFile $image) 
-    {
-        $path = 'images/' . Str::random();
-
-        if (!Storage::exists($path)) {
-            Storage::makeDirectory($path, 0755, true);
-        }
-
-
-        if (!Storage::putFileAs($path, $image, $image->getClientOriginalName()))  {
-            throw new Exception("Incapaz de salvar o arquivo {$image->getClientOriginalName()}");
-        } 
-
-        return $path . '/' . $image->getClientOriginalName();
     }
 }
