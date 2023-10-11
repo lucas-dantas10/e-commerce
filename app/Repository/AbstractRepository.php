@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Interfaces\RepositoryInterface;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,10 +34,16 @@ abstract class AbstractRepository implements RepositoryInterface
     }
     public static function delete(int $id): int
     {
-        return self::loadModel()->query()->where('id', $id)->delete();
+        if (static::$model == Customer::class) {
+            return self::loadModel()::query()->where('user_id', $id)->delete();
+        }
+        return self::loadModel()::query()->where('id', $id)->delete();
     }
     public static function update(int $id, array $attributes): int
     {
-        return self::loadModel()->query()->where('id', $id)->update($attributes);
+        if (static::$model == Customer::class) {
+            return self::loadModel()::query()->where(['user_id' => $id])->update($attributes);
+        }
+        return self::loadModel()::query()->where(['id' => $id])->update($attributes);
     }
 }
