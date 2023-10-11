@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\User\UserService;
-use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -49,12 +48,8 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, int $id): UserResource
     {
         $data = $request->validated();
-        $user = User::findOrFail($id);
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
 
-        $user->update($data);
+        $user = $this->userService->updateUser($data, $id);
 
         return new UserResource($user);
     }
