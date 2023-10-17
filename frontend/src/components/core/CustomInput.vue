@@ -8,15 +8,23 @@
             </span>
             <template v-if="type === 'select'">
                 
-                <select :name="name" :required="required" :value="modelInput" :class="inputClasses"
+                <select 
+                    :name="name" 
+                    :required="required" 
+                    :value="modelInput" 
+                    :class="inputClasses"
                     @change="onChange($event.target.value)">
                     <option v-for="option of selectOptions" :value="option.key">{{ option.text }}</option>
                 </select>
             </template>
 
             <template v-else-if="type === 'textarea'">
-                <textarea :name="name" :required="required" :value="modelInput"
-                    @input="$emit('update:modelInput', $event.target.value)" :class="inputClasses"
+                <textarea 
+                    :name="name" 
+                    :required="required" 
+                    :value="modelInput"
+                    @input="$emit('update:modelInput', $event.target.value)" 
+                    :class="inputClasses"
                     :placeholder="label">
                 </textarea>
             </template>
