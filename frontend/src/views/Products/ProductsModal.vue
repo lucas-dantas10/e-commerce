@@ -48,6 +48,7 @@
                                     <CustomInput 
                                         type="textarea" 
                                         class="mb-2" 
+                                        :required="false"
                                         v-model:modelInput="products.description"
                                         label="Descrição" 
                                     />
@@ -151,6 +152,7 @@ export default {
 
         onSubmit() {
             this.loading = true;
+            console.log(this.products);
             if (this.product.id) {
                 store.dispatch('updateProduct', this.products)
                     .then(response => {
@@ -167,6 +169,7 @@ export default {
                         this.loading = false;
                         if (response.status === 201) {
                             // TODO show notification
+                            store.commit('showToast', 'Produto foi cadastrado com sucesso');
                             store.dispatch('getProducts');
                             this.closeModal();
                         }

@@ -88,7 +88,6 @@ export default {
             .then(({ data }) => {
                 this.title = `Atualizando Cliente "${data.first_name} ${data.last_name}"`;
                 this.customer = data;
-                console.log(data);
             })
             .catch(({ response }) => console.log(response));
 
