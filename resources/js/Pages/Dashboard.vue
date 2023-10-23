@@ -24,43 +24,33 @@ onMounted(() => {
                 Home
             </h2>
         </template>
-
-        <div class="max-w-sm rounded overflow-hidden py-10">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" v-for="product in products" :key="product.id">
-                <img
-                    class="w-full"
-                    :src="product.image"
-                    alt="Sunset in the mountains"
-                />
+        <div class="grid gap-8 grig-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5">
+            <div 
+                class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white"               
+                v-for="product in products" 
+                :key="product.id"
+            >
+                <a href="#" class="aspect-square block overflow-hidden">
+                    <img
+                        class="object-cover rounded-lg hover:scale-105 hover:rotate-1 transition-transform"
+                        :src="product.image"
+                        alt="Sunset in the mountains"
+                    />
+                </a>
+                
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2">{{ product.title }}</div>
-                    <p class="text-gray-700 text-base">
-                        Preço: {{ product.price }}
+                    <p class="text-gray-700 text-base font-bold">
+                        R$ {{ product.price }}
                     </p>
                 </div>
-                <div class="px-6 pt-4 pb-2">
-                    <span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                        >#photography</span
-                    >
-                    <span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                        >#travel</span
-                    >
-                    <span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                        >#winter</span
-                    >
+
+                <div class="px-6 py-4">
+                    <button class="border px-4 py-2 rounded-md bg-purple-600 text-white">
+                        Add ao carrinho
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
-                </div>
-            </div>
-        </div> -->
     </AuthenticatedLayout>
 </template>
