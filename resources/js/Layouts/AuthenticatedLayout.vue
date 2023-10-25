@@ -40,8 +40,23 @@ const showingNavigationDropdown = ref(false);
                                 <v-icon name="io-cart-outline"></v-icon>
                                 <p>Carrinho</p>
                             </a>
+                            <a 
+                                v-if="!$page.props.auth.user"
+                                :href="route('login')" 
+                                class="inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150"
+                            >
+                                <v-icon name="hi-login"></v-icon>
+                                <p>Login</p>
+                            </a>
+                            <a 
+                                v-if="!$page.props.auth.user"
+                                :href="route('register')" 
+                                class="inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150"
+                            >
+                                <p>Registrar</p>
+                            </a>
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
+                            <div class="ml-3 relative" v-if="$page.props.auth.user">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -49,7 +64,7 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                <!-- {{ $page.props.auth.user.name }} -->
+                                                {{ $page.props.auth.user.name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
@@ -78,7 +93,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="-mr-2 flex items-center sm:hidden">
+                        <div class="-mr-2 flex items-center sm:hidden" v-if="$page.props.auth.user">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -122,12 +137,12 @@ const showingNavigationDropdown = ref(false);
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="pt-4 pb-1 border-t border-gray-200" v-if="$page.props.auth.user">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">
-                                <!-- {{ $page.props.auth.user.name }} -->
+                                {{ $page.props.auth.user.name }}
                             </div>
-                            <!-- <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div> -->
+                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
