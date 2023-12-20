@@ -36,7 +36,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <a :href="route('cart')" class="inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150">
+                            <a :href="route('carrinho.index')" class="inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150">
                                 <v-icon name="io-cart-outline"></v-icon>
                                 <p>Carrinho</p>
                             </a>
