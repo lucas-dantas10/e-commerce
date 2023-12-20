@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductListResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,10 +19,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $perPage = request('per_page', 10);
+        $products = Product::paginate($perPage);
 
         return Inertia::render('Dashboard', [
-            'products' => $products
+            'products' => ProductListResource::collection($products)
         ]);
     }
 
