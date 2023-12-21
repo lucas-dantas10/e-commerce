@@ -4,35 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Services\Cart\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Number;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
+
+    public function __construct(
+        protected CartService $cartService,
+    )
+    { }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $currentUser = request()->user();
-        $cartItems = CartItem::where('user_id', $currentUser->id)
-            ->get()
-            ->map(
-                fn($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
-            );
-
-        $productsIds = Arr::pluck($cartItems, 'product_id');
-
-        $productsOfCart = Product::query()->whereIn('id', $productsIds)->get();
-
-        $cartItems = Arr::keyBy($productsOfCart, 'product_id');
-
-        // \dd([$productsOfCart, $cartItems]);
+        [$cartItems, $products, $total] = $this->cartService->getCartItemsWithProducts();
 
         return Inertia::render('Cart/Cart', [
             'cartItems' => $cartItems,
-            'products' => $productsOfCart,
+            'products' => $products,
+            'total' => $total
         ]);
     }
 
@@ -71,16 +67,30 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $productId)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|numeric',
+            'quantity' => 'required|numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return;
+        }
+
+        $dataValidated = $validator->validated();
+
+        $this->cartService->updateQuantityOfCart($productId, $dataValidated);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $productId)
     {
-        //
+        $productOfCart = CartItem::where('product_id', $productId)
+            ->where('user_id', auth()->user()->id)->delete();
+
+        return;
     }
 }
