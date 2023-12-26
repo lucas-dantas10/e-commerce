@@ -1,9 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import { onMounted } from "vue";
+import { Head, router } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
+// import Toast from '../Components/Toast.vue';
+import { ref } from "vue";
 
+const error = ref({});
 const props = defineProps({
     products: {
         type: Object,
@@ -11,16 +13,20 @@ const props = defineProps({
     }
 });
 
-
-onMounted(() => {
-    console.log(props.products);
-})
+function addCartItem(product) {
+    router.post('/carrinho', {product_id: product.id}, {
+        onError: (errors) => {
+            error.value = {'message': errors.message, 'type': errors.type};
+        }
+    });
+}
 </script>
 
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
+        <!-- <Toast :toast="error" /> -->
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Home
@@ -50,6 +56,7 @@ onMounted(() => {
                 <div class="px-6 py-4">
                     <button 
                         class="border px-4 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-500 transition-colors"
+                        @click.prevent="addCartItem(product)"
                     >
                         Add ao carrinho
                     </button>
