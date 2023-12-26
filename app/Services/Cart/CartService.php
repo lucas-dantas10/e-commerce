@@ -50,4 +50,11 @@ class CartService
 
         return;
     }
+
+    public function saveItemInCart($dataValidated, $user)
+    {
+        $itemCreated = $this->cartRepository->saveItem($dataValidated, $user);
+
+        return $itemCreated;
+    }
 }
