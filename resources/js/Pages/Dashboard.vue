@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
-// import Toast from '../Components/Toast.vue';
+import ToastList from '../Components/ToastList.vue';
 import { ref } from "vue";
 
 const error = ref({});
@@ -14,11 +14,7 @@ const props = defineProps({
 });
 
 function addCartItem(product) {
-    router.post('/carrinho', {product_id: product.id}, {
-        onError: (errors) => {
-            error.value = {'message': errors.message, 'type': errors.type};
-        }
-    });
+    router.post('/carrinho', {product_id: product.id});
 }
 </script>
 
@@ -26,7 +22,7 @@ function addCartItem(product) {
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <!-- <Toast :toast="error" /> -->
+        <ToastList />
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Home
