@@ -18,4 +18,18 @@ class CartItemsRepository extends AbstractRepository
 
         return $cartItems;
     }
+
+    public function saveItem($data, $user)
+    {
+        $itemCreated = CartItem::firstOrCreate(
+            ['product_id' => $data['product_id']],
+            [
+            'user_id' => $user->id,
+            'product_id' => $data['product_id'],
+            'quantity' => 1,
+            'created_at' => now(),
+        ]);
+
+        return $itemCreated;
+    }
 }
