@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { computed } from "vue";
-import { router } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     cartItems: {
@@ -21,7 +21,6 @@ function changeQuantity(cart) {
 }
 
 function removeProductOfCart(cartItem) {
-    console.log(cartItem)
     router.delete(`/carrinho/${cartItem.product_id}`);
 }
 
