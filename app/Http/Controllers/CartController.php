@@ -52,20 +52,13 @@ class CartController extends Controller
 
         $dataValidated = $validator->validated();
 
-        $itemCreated = CartItem::firstOrCreate(
-            ['product_id' => $dataValidated['product_id']],
-            [
-            'user_id' => $user->id,
-            'product_id' => $dataValidated['product_id'],
-            'quantity' => 1,
-            'created_at' => now(),
-        ]);
+        $itemCreated = $this->cartService->saveItemInCart($dataValidated, $user);
 
         if ($itemCreated->wasRecentlyCreated) {
-            return \redirect()->back()->with('success', 'Item criado com sucesso!');
+            return \redirect()->back()->with('toast', 'Item adicionado no carrinho!');
         }
 
-        return \redirect()->back()->withErrors(['message' => 'Item ja está no carrinho', 'type' => 'error']);
+        return \redirect()->back()->with('toast', 'Item já está no carrinho');
     }
 
     /**
