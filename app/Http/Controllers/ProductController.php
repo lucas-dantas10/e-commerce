@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductListResource;
+use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-
-    // public function __construct(
-    //     protected
-    // ) { }
-
     /**
      * Display a listing of the resource.
      */
@@ -22,8 +18,17 @@ class ProductController extends Controller
         $perPage = request('per_page', 10);
         $products = Product::paginate($perPage);
 
+        if (!auth()->user()) {
+            return Inertia::render('Dashboard', [
+                'products' => ProductListResource::collection($products),
+            ]);
+        }
+
+        $quantityCartItems = CartItem::where('user_id', auth()->user()->id)->get();
+
         return Inertia::render('Dashboard', [
-            'products' => ProductListResource::collection($products)
+            'products' => ProductListResource::collection($products),
+            'quantityCartItems' => $quantityCartItems
         ]);
     }
 
