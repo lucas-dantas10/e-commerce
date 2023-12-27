@@ -1,13 +1,17 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const page = usePage();
+const quantityItemInCart = ref(0);
+
+onMounted(() => quantityItemInCart.value = page.props.quantityCartItems.length);
 </script>
 
 <template>
@@ -36,9 +40,12 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <a :href="route('carrinho.index')" class="inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150">
+                            <a :href="route('carrinho.index')" class="relative w-[7.5rem] inline-flex items-center gap-2 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 cursor-pointer focus:outline-none transition ease-in-out duration-150">
                                 <v-icon name="io-cart-outline"></v-icon>
                                 <p>Carrinho</p>
+                                <div class="absolute right-0 top-0 rounded-full border border-red-500 py-[2px] px-[8px] bg-red-500 text-white">
+                                    {{ quantityItemInCart }}
+                                </div>
                             </a>
                             <a 
                                 v-if="!$page.props.auth.user"
