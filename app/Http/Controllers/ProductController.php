@@ -18,17 +18,8 @@ class ProductController extends Controller
         $perPage = request('per_page', 10);
         $products = Product::paginate($perPage);
 
-        if (!auth()->user()) {
-            return Inertia::render('Dashboard', [
-                'products' => ProductListResource::collection($products),
-            ]);
-        }
-
-        $quantityCartItems = CartItem::where('user_id', auth()->user()->id)->get();
-
         return Inertia::render('Dashboard', [
-            'products' => ProductListResource::collection($products),
-            'quantityCartItems' => $quantityCartItems
+            'products' => ProductListResource::collection($products)
         ]);
     }
 
