@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -40,6 +41,9 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'toast' => session('toast'),
+            'quantityItemsInCart' => fn () => $request->user()
+                ? CartItem::where('user_id', $request->user()->id)->get()
+                : null,
         ];
     }
 }
