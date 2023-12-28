@@ -56,7 +56,7 @@ class CartController extends Controller
 
         if ($itemCreated->wasRecentlyCreated) {
             return \redirect()->back()->with('toast', 'Item adicionado no carrinho!');
-        }
+        }   
 
         return \redirect()->back()->with('toast', 'Item já está no carrinho');
     }
