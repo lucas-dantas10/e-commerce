@@ -23,6 +23,13 @@ class ProductController extends Controller
         ]);
     }
 
+    public function view(Product $product)
+    {
+        return Inertia::render("Product/ProductView", [
+            'product' => $product,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
