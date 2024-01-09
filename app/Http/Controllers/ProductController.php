@@ -25,8 +25,19 @@ class ProductController extends Controller
 
     public function view(Product $product)
     {
+        $cartItem = CartItem::where('user_id', auth()->user()->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($cartItem == null) {
+            return Inertia::render("Product/ProductView", [
+                'product' => $product,
+            ]);
+        }
+
         return Inertia::render("Product/ProductView", [
             'product' => $product,
+            'cartItem' => $cartItem,
         ]);
     }
 

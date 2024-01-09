@@ -21,9 +21,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $query = $this->productService->filterByProducts();
+        $productsPaginated = $this->productService->filterByProducts();
 
-        return ProductListResource::collection($query);
+        return ProductListResource::collection($productsPaginated);
     }
 
     /**

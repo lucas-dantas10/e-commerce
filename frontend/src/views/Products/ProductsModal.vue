@@ -152,7 +152,7 @@ export default {
 
         onSubmit() {
             this.loading = true;
-            console.log(this.products);
+            // console.log(this.products);
             if (this.product.id) {
                 store.dispatch('updateProduct', this.products)
                     .then(response => {

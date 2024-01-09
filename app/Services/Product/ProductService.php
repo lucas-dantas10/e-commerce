@@ -22,8 +22,9 @@ class ProductService
     {
         $perPage = request('per_page', 10);
         $search = request('search', '');
-        $sortField = request('sort_field', 'updated_at');
+        $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
+
 
         $query = $this->productRepository->filterProducts(
             search: $search,

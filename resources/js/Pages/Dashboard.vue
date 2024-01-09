@@ -34,11 +34,11 @@ function addCartItem(product) {
                 v-for="product in products.data" 
                 :key="product.id"
             >
-                <a href="#" class="aspect-square block overflow-hidden">
+                <a :href="route('product.view', product.slug)" class="aspect-square block overflow-hidden">
                     <img
                         class="object-cover rounded-lg hover:scale-105 hover:rotate-1 transition-transform"
                         :src="product.image_url"
-                        alt="Sunset in the mountains"
+                        :alt="product.description"
                     />
                 </a>
                 
@@ -51,8 +51,9 @@ function addCartItem(product) {
 
                 <div class="px-6 py-4">
                     <button 
+                        type="submit"
                         class="border px-4 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-500 transition-colors"
-                        @click.prevent="addCartItem(product)"
+                        @click="addCartItem(product)"
                     >
                         Add ao carrinho
                     </button>

@@ -9,11 +9,15 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
 const page = usePage();
-// const quantityCartItems = ref(0);
 
-const quantityCartItems = computed(() => page.props.quantityItemsInCart.length)
+const quantityCartItems = computed(() => {
+    if (page.props.quantityItemsInCart != null) {
+        return page.props.quantityItemsInCart.length
+    }
 
-// onMounted(() => quantityCartItems.value = );
+    return 0;
+    
+})
 </script>
 
 <template>

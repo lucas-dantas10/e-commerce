@@ -50,6 +50,7 @@ const getTotalValue = computed(() => {
                         class="w-full flex flex-col sm:flex-row items-center gap-4 flex-1 p-4"
                     >
                         <a
+                            :href="route('product.view', product.slug)"
                             class="w-36 h-32 flex items-center justify-center overflow-hidden"
                         >
                             <img
