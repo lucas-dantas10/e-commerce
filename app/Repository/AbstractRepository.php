@@ -23,14 +23,15 @@ abstract class AbstractRepository implements RepositoryInterface
         return self::loadModel()::all();
     }
 
-    public static function create(array $attributes): Model | null
+    public static function create(array $attributes, ?array $values): Model | null | static
     {
-        return self::loadModel()::query()->create($attributes);
+        return self::loadModel()::query()->firstOrCreate($attributes, $values);
     }
 
     public static function find(int $id): Model | null
     {
-        return self::loadModel()::query()->find($id);
+        return self::loadModel()::query()->findOrFail($id);
+        // return self::loadModel()::query()->find($id);
     }
     public static function delete(int $id): int
     {
