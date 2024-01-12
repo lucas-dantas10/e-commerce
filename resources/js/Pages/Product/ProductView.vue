@@ -1,22 +1,37 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { onMounted } from "vue";
+import ToastList from '@/Components/ToastList.vue';
+import { router } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 const props = defineProps({
     product: {
-        type: Array,
+        type: Object,
         required: true,
     },
-    cartItem: {
-        type: Object,
+    quantity: {
+        type: Number,
+        default: 0,
     }
 });
 
-onMounted(() => console.log(props.cartItem));
+const quantityItem = ref(props.quantity);
+
+function addCartItem() {
+    router.post('/carrinho', {product_id: props.product.id});
+}
+
+function changeQuantity() {
+    router.put(`/carrinho/${props.product.id}`, {
+        product_id: props.product.id,
+        quantity: quantityItem.value
+    });
+}
 </script>
 
 <template>
     <AuthenticatedLayout>
+        <ToastList />
         <section class="container mx-auto p-5">
             <div class="grid gap-6 grid-cols-1 lg:grid-cols-5">
                 <div class="lg:col-span-3">
@@ -37,13 +52,15 @@ onMounted(() => console.log(props.cartItem));
                         <span class="font-bold">Quantidade</span>
                         <input 
                             type="number" 
-                            :v-model="cartItem == undefined ? 0 : cartItem.quantity" 
+                            v-model="quantityItem" 
+                            @change="changeQuantity()"
+                            min="1"
                             class="py-1 rounded-md border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-24" 
                         />
                     </div>
 
                     <div class="mt-6 w-full ">
-                        <button class="border border-purple-600 rounded-md px-2 py-2 w-full text-xl text-center bg-purple-600 text-white ">
+                        <button @click.prevent="addCartItem()" class="border border-purple-600 rounded-md px-2 py-2 w-full text-xl text-center bg-purple-600 text-white ">
                             Add ao carrinho
                         </button>
                     </div>
