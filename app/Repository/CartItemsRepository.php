@@ -6,6 +6,10 @@ use App\Models\CartItem;
 
 class CartItemsRepository extends AbstractRepository
 {
+
+    protected static $model = CartItem::class;
+
+
     public function getCartItems()
     {
         $currentUser = request()->user();
@@ -21,14 +25,15 @@ class CartItemsRepository extends AbstractRepository
 
     public function saveItem($data, $user)
     {
-        $itemCreated = CartItem::firstOrCreate(
+        $itemCreated = $this->create(
             ['product_id' => $data['product_id']],
             [
-            'user_id' => $user->id,
-            'product_id' => $data['product_id'],
-            'quantity' => 1,
-            'created_at' => now(),
-        ]);
+                'user_id' => $user->id,
+                'product_id' => $data['product_id'],
+                'quantity' => 1,
+                'created_at' => now(),
+            ]
+        );
 
         return $itemCreated;
     }
