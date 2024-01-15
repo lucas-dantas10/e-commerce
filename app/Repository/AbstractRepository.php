@@ -31,7 +31,6 @@ abstract class AbstractRepository implements RepositoryInterface
     public static function find(int $id): Model | null
     {
         return self::loadModel()::query()->findOrFail($id);
-        // return self::loadModel()::query()->find($id);
     }
     public static function delete(int $id): int
     {
