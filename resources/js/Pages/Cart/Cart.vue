@@ -24,6 +24,10 @@ function removeProductOfCart(cartItem) {
     router.delete(`/carrinho/${cartItem.product_id}`);
 }
 
+function checkout() {
+    router.post(route('cart.checkout'));
+}
+
 const getTotalValue = computed(() => {
     return props.total;
 });
@@ -102,8 +106,10 @@ const getTotalValue = computed(() => {
                     </div>
 
                     <div class="p-4 flex items-center justify-center">
+                        
                         <button
                             type="submit"
+                            @click="checkout()"
                             class="border py-2 border-purple-700 bg-purple-700 text-white text-xl text-center w-[50%] rounded-md"
                         >
                             Finalizar Compra
