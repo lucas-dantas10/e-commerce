@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/carrinho', CartController::class);
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('cart.checkout');
     Route::get('/product/{product:slug}', [ProductController::class, 'view'])->name('product.view');
 });
 
