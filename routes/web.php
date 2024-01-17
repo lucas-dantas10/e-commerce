@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/carrinho', CartController::class);
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/checkout-success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/product/{product:slug}', [ProductController::class, 'view'])->name('product.view');
 });
 
