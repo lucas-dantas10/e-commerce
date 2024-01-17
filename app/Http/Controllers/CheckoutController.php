@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use App\Helpers\Cart;
+use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Payment;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckoutController extends Controller
 {
@@ -28,7 +37,7 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         foreach ($products as $product) {
-            $quantity = $cartItems[$product->id]->quantity;
+            $quantity = $cartItems[$product->id]['quantity'];
 
             if ($product->quantity !== null && $product->quantity < $quantity) {
                 $message = match ($product->quantity) {
@@ -36,21 +45,21 @@ class CheckoutController extends Controller
                     1 => "O produto {$product->title} só tem 1 unidade",
                     default => "O produto {$product->title} só tem {$product->quantity} unidades",
                 };
-            }
 
-            return \redirect()->back()->with('toast', $message);
+                return \redirect()->back()->with('toast', $message);
+            }
         }
 
         foreach ($products as $product) {
-            $quantity = $cartItems[$product->id]->quantity;
+            $quantity = $cartItems[$product->id]['quantity'];
             $totalPrice += $product->price * $quantity;
 
-            $lineItems[] = [
+            $lineItems[] = [                
                 'price_data' => [
-                    'currency' => 'brl',
+                    'currency' => 'usd',
                     'product_data' => [
                         'name' => $product->title,
-                        'images' => $product->image,
+                        'images' => $product->image ? [$product->image] : []
                     ],
                     'unit_amount' => $product->price * 100,
                 ],
@@ -69,15 +78,76 @@ class CheckoutController extends Controller
             }
         
         }
-
         $session = Session::create([
             'line_items' => $lineItems,
             'mode' => 'payment',
             'customer_creation' => 'always',
             'success_url' => route('checkout.success'),
-            'cancel_url' => route('checkout.cancel'),
+            'cancel_url' => route('dashboard'),
         ]);
+        
+        try {
 
-        \dd($session);
+            // Create Order
+            $orderData = [
+                'total_price' => $totalPrice,
+                'status' => OrderStatus::Unpaid,
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+            ];
+
+            $order = Order::create($orderData);
+
+            // Create Order Items
+            foreach ($orderItems as $orderItem) {
+                $orderItem['order_id'] = $order->id;
+                OrderItem::create($orderItem);
+            }
+
+            // Create Payment
+            $paymentData = [
+                'order_id' => $order->id,
+                'amount' => $totalPrice,
+                'status' => PaymentStatus::Pending,
+                'type' => 'cc',
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+                'session_id' => $session->id,
+            ];
+
+            Payment::create($paymentData);
+
+        } catch(Exception $err) {
+            DB::rollBack();
+            Log::critical(__METHOD__ . ' method does not work. '. $err->getMessage());
+            throw $err;
+        }
+
+        DB::commit();
+        CartItem::where('user_id', $user->id)->delete();
+
+        return \redirect($session->url);
     }
+
+    public function success(Request $request) 
+    {
+        \dd($request);
+        $user = $request->user();
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+        try {
+            $session_id = $request->get('session_id');
+            $session = Session::retrieve($session_id);
+
+            if (!$session) {
+                return \redirect()->route('dashboard')->with('toast', 'Invalido Id da Sessão');
+            }
+
+            // busca por pagamento para mudança do status
+        } catch (NotFoundHttpException $err) {
+            throw $err;
+        } catch (Exception $err) {
+            return \redirect()->route('dashboard')->with('toast', $err->getMessage());
+        }
+    } 
 }
