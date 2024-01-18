@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,7 +84,7 @@ class CheckoutController extends Controller
             'mode' => 'payment',
             'customer_creation' => 'always',
             'success_url' => route('checkout.success'),
-            'cancel_url' => route('dashboard'),
+            'cancel_url' => route('checkout.failed'),
         ]);
         
         try {
@@ -112,7 +113,7 @@ class CheckoutController extends Controller
                 'type' => 'cc',
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
-                'session_id' => $session->id,
+                'session_id' => $session->id
             ];
 
             Payment::create($paymentData);
@@ -131,8 +132,6 @@ class CheckoutController extends Controller
 
     public function success(Request $request) 
     {
-        \dd($request);
-        $user = $request->user();
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         try {
@@ -143,11 +142,34 @@ class CheckoutController extends Controller
                 return \redirect()->route('dashboard')->with('toast', 'Invalido Id da Sessão');
             }
 
-            // busca por pagamento para mudança do status
+            $payment = Payment::query()
+                ->where('session_id', $session_id)
+                ->whereIn('status', [PaymentStatus::Pending, PaymentStatus::Paid])
+                ->first();
+
+            if (!$payment) {
+                throw new NotFoundHttpException();
+            }
+
+            if ($payment->status == PaymentStatus::Pending->value) {
+                // $this->updateOrderAndSession($payment);
+            }
+
+            $customer = Session::retrieve($session->customer);
+
+            return Inertia::render('Checkout/CheckoutSuccess');
+            // retornar tela de pagamento concluido no vur
         } catch (NotFoundHttpException $err) {
             throw $err;
         } catch (Exception $err) {
             return \redirect()->route('dashboard')->with('toast', $err->getMessage());
         }
     } 
+
+    public function failed(Request $request)
+    {
+        // retornar a tela de failed no vue
+
+        return Inertia::render('Checkout/CheckoutFailed');
+    }
 }
