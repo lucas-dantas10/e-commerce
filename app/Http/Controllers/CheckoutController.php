@@ -9,10 +9,12 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -152,13 +154,12 @@ class CheckoutController extends Controller
             }
 
             if ($payment->status == PaymentStatus::Pending->value) {
-                // $this->updateOrderAndSession($payment);
+                $this->updateOrderAndSession($payment);
             }
 
             $customer = Session::retrieve($session->customer);
 
             return Inertia::render('Checkout/CheckoutSuccess');
-            // retornar tela de pagamento concluido no vur
         } catch (NotFoundHttpException $err) {
             throw $err;
         } catch (Exception $err) {
@@ -171,5 +172,35 @@ class CheckoutController extends Controller
         // retornar a tela de failed no vue
 
         return Inertia::render('Checkout/CheckoutFailed');
+    }
+
+    public function updateOrderAndSession(Payment $payment)
+    {
+        DB::beginTransaction();
+
+        try {
+            $payment->status = PaymentStatus::Paid->value;
+            $payment->update();
+
+            $order = $payment->order;
+
+            $order->status = OrderStatus::Paid->value;
+            $order->update();   
+        } catch (Exception $err) {
+            DB::rollBack();
+            Log::critical(__METHOD__ . ' method does not work. '. $err->getMessage());
+            throw $err;
+        }
+        DB::commit();
+
+        try {
+            $adminUsers = User::where('is_admin', 1)->get();
+
+            foreach ([...$adminUsers, $order->user] as $user) {
+                // Mail::to($user)->send(new NewOrderEmail($order, (bool)$user->is_admin));
+            }
+        } catch (Exception $err) {
+            Log::critical('Email sending does not work. '. $err->getMessage());
+        }
     }
 }
