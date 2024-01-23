@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Stripe\StripeClient;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckoutController extends Controller
-{
+{ 
     public function checkout(Request $request)
     {
         $user = $request->user();
@@ -85,10 +86,10 @@ class CheckoutController extends Controller
             'line_items' => $lineItems,
             'mode' => 'payment',
             'customer_creation' => 'always',
-            'success_url' => route('checkout.success'),
-            'cancel_url' => route('checkout.failed'),
+            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.failed', [], true),
         ]);
-        
+
         try {
 
             // Create Order
@@ -143,7 +144,6 @@ class CheckoutController extends Controller
             if (!$session) {
                 return \redirect()->route('dashboard')->with('toast', 'Invalido Id da Sessão');
             }
-
             $payment = Payment::query()
                 ->where('session_id', $session_id)
                 ->whereIn('status', [PaymentStatus::Pending, PaymentStatus::Paid])
@@ -156,8 +156,8 @@ class CheckoutController extends Controller
             if ($payment->status == PaymentStatus::Pending->value) {
                 $this->updateOrderAndSession($payment);
             }
-
-            $customer = Session::retrieve($session->customer);
+            // \dd($session->customer);
+            // $customer = Session::retrieve($session->customer);
 
             return Inertia::render('Checkout/CheckoutSuccess');
         } catch (NotFoundHttpException $err) {
