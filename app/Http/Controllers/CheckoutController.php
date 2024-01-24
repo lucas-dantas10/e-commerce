@@ -156,10 +156,12 @@ class CheckoutController extends Controller
             if ($payment->status == PaymentStatus::Pending->value) {
                 $this->updateOrderAndSession($payment);
             }
-            // \dd($session->customer);
-            // $customer = Session::retrieve($session->customer);
 
-            return Inertia::render('Checkout/CheckoutSuccess');
+            $customer = $session->customer_details;
+
+            return Inertia::render('Checkout/CheckoutSuccess', [
+                'customer' => $customer,
+            ]);
         } catch (NotFoundHttpException $err) {
             throw $err;
         } catch (Exception $err) {
@@ -172,6 +174,11 @@ class CheckoutController extends Controller
         // retornar a tela de failed no vue
 
         return Inertia::render('Checkout/CheckoutFailed');
+    }
+
+    public function checkoutOrder(Order $order, Request $request)
+    {
+        // pegar o pedido que nao foi finalizado o pagamento
     }
 
     public function updateOrderAndSession(Payment $payment)
