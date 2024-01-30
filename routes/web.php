@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout-success', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/checkout-failed', [CheckoutController::class, 'failed'])->name('checkout.failed');
     Route::get('/product/{product:slug}', [ProductController::class, 'view'])->name('product.view');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 require __DIR__ . '/auth.php';
