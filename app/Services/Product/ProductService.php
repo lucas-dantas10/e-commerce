@@ -50,7 +50,8 @@ class ProductService
             $data['image_size'] = $image->getSize();
         }
 
-        $product = $this->productRepository->create($data);
+        // $product = $this->productRepository->create($data);
+        $product = Product::create($data);
 
         return $product;
     }

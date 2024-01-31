@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
 import ToastList from '../Components/ToastList.vue';
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const error = ref({});
 const props = defineProps({
@@ -12,7 +12,6 @@ const props = defineProps({
         required: true
     }
 });
-
 function addCartItem(product) {
     router.post('/carrinho', {product_id: product.id});
 }
@@ -29,7 +28,14 @@ function addCartItem(product) {
             </h2>
         </template>
         <div class="grid gap-8 grig-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5">
-            <div 
+
+            <div v-if="props.products.data.length == 0" >
+                <div>
+                    Não possui produtos
+                </div>
+            </div>
+            <div
+                v-else
                 class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white"               
                 v-for="product in products.data" 
                 :key="product.id"

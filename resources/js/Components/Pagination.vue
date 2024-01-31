@@ -8,10 +8,6 @@ const props = defineProps({
         required: true,
     },
 });
-
-onMounted(() => {
-    console.log(props.pagination);
-})
 </script>
 
 <template>
