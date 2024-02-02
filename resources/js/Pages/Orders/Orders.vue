@@ -1,5 +1,13 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+
+const props = defineProps({
+    orders: {
+        type: Array,
+        required: true
+    }
+});
+
 </script>
 
 <template>
@@ -47,7 +55,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
                                 <td class="py-1 px-2 flex gap-2 w-[100px]">
                                     <form>
                                         <button
-                                            class="border-purple-900 flex items-center py-1 border rounded-md px-2"
+                                            class="border border-purple-600 bg-purple-600 text-white flex items-center rounded-md px-2"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
