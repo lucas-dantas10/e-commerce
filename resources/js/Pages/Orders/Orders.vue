@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { onMounted } from 'vue';
 
 const props = defineProps({
     orders: {
@@ -7,6 +8,10 @@ const props = defineProps({
         required: true
     }
 });
+
+onMounted(() => {
+    console.log(props.orders)
+})
 
 </script>
 
@@ -29,26 +34,27 @@ const props = defineProps({
                         </thead>
 
                         <tbody>
-                            <tr class="border-b">
+                            <tr class="border-b" v-for="(order, i) in props.orders">
                                 <td class="py-1 px-2">
                                     <a
                                         href="https://lcommerce.net/orders/4"
                                         class="text-purple-600 hover:text-purple-500"
                                     >
-                                        #1
+                                        #{{ order.id }}
                                     </a>
                                 </td>
                                 <td class="py-1 px-2 whitespace-nowrap">
-                                    2024-01-30 20:54:19
+                                    {{ order.created_at }}
                                 </td>
                                 <td class="py-1 px-2">
                                     <small
-                                        class="text-white py-1 px-2 rounded bg-red-500"
+                                        class="text-white py-1 px-2 rounded"
+                                        :class="order.status == 'pago' ? 'bg-emerald-500' : 'bg-red-500'"
                                     >
-                                        Não pago
+                                        {{ order.status }}
                                     </small>
                                 </td>
-                                <td class="py-1 px-2">$799.00</td>
+                                <td class="py-1 px-2">R$ {{ order.total_price }}</td>
                                 <td class="py-1 px-2 whitespace-nowrap">
                                     1 item(s)
                                 </td>
