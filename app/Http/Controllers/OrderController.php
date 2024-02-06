@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render("Orders/Orders");
+        $user = $request->user();
+
+        $orders = Order::query()
+            ->where('created_by', $user->id)
+            ->get();
+            
+        return Inertia::render("Orders/Orders", [
+            'orders' => $orders,
+        ]);
     }
 
     public function show()
