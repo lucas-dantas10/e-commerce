@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('order_items', function (Blueprint $table) {
             $table->dropColumn('order_id');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreignId('order_id')->references('id')->on('orders');
         });
     }
 
