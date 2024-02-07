@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Inertia\Testing\AssertableInertia;
 
 uses()->group('orders');
@@ -29,11 +31,31 @@ it('number of orders from the logged in user is correct', function () {
     $response->assertStatus(200);
 });
 
-// it('checks if the subtotal is correct', function () {
-//     $response = $this->get('/orders');
+it('checks if the subtotal is correct', function () {
+    $response = $this->get('/orders');
 
-//     $orders = Order::query()
-//             ->where('created_by', auth()->id())
-//             ->count();
-//     dd($orders);
-// });
+    $product = Product::factory()->create();
+
+    $order = Order::create([
+        'total_price' => $product->price,
+        'status' => 'pago',
+        'created_by' => auth()->id(),
+        'created_at' => now()
+    ]);
+
+    $orderItem = OrderItem::create([
+        'product_id' => $product->id,
+        'order_id' => $order->id,
+        'quantity' =>  1,
+        'unit_price' => $product->price,
+        'created_at' => now()
+    ]);
+
+    // $orders = Order::query()
+    //         ->where('created_by', auth()->id())
+    //         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+    //         ->get();
+
+    expect($product->price)->toBe($orderItem->unit_price);
+    $response->assertStatus(200);
+});
