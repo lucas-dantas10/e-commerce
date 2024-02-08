@@ -17,6 +17,7 @@ class OrderController extends Controller
 
         $orders = Order::query()
             ->where('created_by', $user->id)
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
             ->get();
 
        $orderFormated = OrderItemResource::collection($orders);
