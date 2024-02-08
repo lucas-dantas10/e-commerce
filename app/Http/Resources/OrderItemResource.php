@@ -18,10 +18,10 @@ class OrderItemResource extends JsonResource
     {
         return [
            'id' => $this->id, 
-           'date' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
+           'date' => (new DateTime($this->created_at))->format('Y-m-d'),
            'status' => $this->status,
            'subtotal' => Number::currency($this->total_price, 'BRL'),
-           'quantity_items' => 19
+           'quantity_items' => $this->quantity
         ];
     }
 }
