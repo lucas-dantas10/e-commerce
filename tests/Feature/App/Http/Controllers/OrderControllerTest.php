@@ -20,13 +20,9 @@ it('page orders has the orders property', function () {
 it('number of orders from the logged in user is correct', function () {
     $response = $this->get('/orders');
 
-    $orders = Order::query()
-            ->where('created_by', auth()->id())
-            ->count();
-
     $response->assertInertia(fn (AssertableInertia $page) => $page
         ->component('Orders/Orders')
-        ->has('orders', $orders)
+        ->has('orders', 1)
     );
     $response->assertStatus(200);
 });
@@ -50,11 +46,6 @@ it('checks if the subtotal is correct', function () {
         'unit_price' => $product->price,
         'created_at' => now()
     ]);
-
-    // $orders = Order::query()
-    //         ->where('created_by', auth()->id())
-    //         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
-    //         ->get();
 
     expect($product->price)->toBe($orderItem->unit_price);
     $response->assertStatus(200);
