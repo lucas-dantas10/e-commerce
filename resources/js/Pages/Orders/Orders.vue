@@ -34,7 +34,7 @@ onMounted(() => {
                         </thead>
 
                         <tbody>
-                            <tr class="border-b" v-for="(order, i) in props.orders">
+                            <tr class="border-b" v-for="(order, i) in props.orders.data">
                                 <td class="py-1 px-2">
                                     <a
                                         href="https://lcommerce.net/orders/4"
@@ -44,7 +44,7 @@ onMounted(() => {
                                     </a>
                                 </td>
                                 <td class="py-1 px-2 whitespace-nowrap">
-                                    {{ order.created_at }}
+                                    {{ order.date }}
                                 </td>
                                 <td class="py-1 px-2">
                                     <small
@@ -54,7 +54,7 @@ onMounted(() => {
                                         {{ order.status }}
                                     </small>
                                 </td>
-                                <td class="py-1 px-2">R$ {{ order.total_price }}</td>
+                                <td class="py-1 px-2">{{ order.subtotal }}</td>
                                 <td class="py-1 px-2 whitespace-nowrap">
                                     1 item(s)
                                 </td>
