@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderCollection;
+use App\Http\Resources\OrderItemResource;
+use App\Http\Resources\OrderItems;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,9 +18,11 @@ class OrderController extends Controller
         $orders = Order::query()
             ->where('created_by', $user->id)
             ->get();
-            
+
+       $orderFormated = OrderItemResource::collection($orders);
+
         return Inertia::render("Orders/Orders", [
-            'orders' => $orders,
+            'orders' => $orderFormated,
         ]);
     }
 
