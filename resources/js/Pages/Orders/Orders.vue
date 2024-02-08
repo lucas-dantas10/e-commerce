@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { onMounted } from 'vue';
+import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     orders: {
@@ -9,9 +9,9 @@ const props = defineProps({
     }
 });
 
-onMounted(() => {
-    console.log(props.orders)
-})
+function payOrder(id) {
+    router.post(route('checkout.order', id));
+}
 
 </script>
 
@@ -34,7 +34,7 @@ onMounted(() => {
                         </thead>
 
                         <tbody>
-                            <tr class="border-b" v-for="(order, i) in props.orders.data">
+                            <tr class="border-b" v-for="(order, i) in props.orders.data" :key="i">
                                 <td class="py-1 px-2">
                                     <a
                                         href="https://lcommerce.net/orders/4"
@@ -56,11 +56,12 @@ onMounted(() => {
                                 </td>
                                 <td class="py-1 px-2">{{ order.subtotal }}</td>
                                 <td class="py-1 px-2 whitespace-nowrap">
-                                    1 item(s)
+                                    {{ order.quantity_items }} item(s)
                                 </td>
-                                <td class="py-1 px-2 flex gap-2 w-[100px]">
-                                    <form>
+                                <td class="py-1 px-2 flex gap-2 w-[100px]" v-if="order.status != 'pago'">
+                                    <form @submit.prevent="payOrder(order.id)">
                                         <button
+                                            type="submit"
                                             class="border border-purple-600 bg-purple-600 text-white flex items-center rounded-md px-2"
                                         >
                                             <svg
