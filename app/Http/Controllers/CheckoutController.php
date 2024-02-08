@@ -22,7 +22,7 @@ use Stripe\StripeClient;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckoutController extends Controller
-{ 
+{
     public function checkout(Request $request)
     {
         $user = $request->user();
@@ -58,7 +58,7 @@ class CheckoutController extends Controller
             $quantity = $cartItems[$product->id]['quantity'];
             $totalPrice += $product->price * $quantity;
 
-            $lineItems[] = [                
+            $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
@@ -80,7 +80,6 @@ class CheckoutController extends Controller
                 $product->quantity -= $quantity;
                 $product->save();
             }
-        
         }
         $session = Session::create([
             'line_items' => $lineItems,
@@ -120,10 +119,9 @@ class CheckoutController extends Controller
             ];
 
             Payment::create($paymentData);
-
-        } catch(Exception $err) {
+        } catch (Exception $err) {
             DB::rollBack();
-            Log::critical(__METHOD__ . ' method does not work. '. $err->getMessage());
+            Log::critical(__METHOD__ . ' method does not work. ' . $err->getMessage());
             throw $err;
         }
 
@@ -133,7 +131,7 @@ class CheckoutController extends Controller
         return \redirect($session->url);
     }
 
-    public function success(Request $request) 
+    public function success(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -167,7 +165,7 @@ class CheckoutController extends Controller
         } catch (Exception $err) {
             return \redirect()->route('dashboard')->with('toast', $err->getMessage());
         }
-    } 
+    }
 
     public function failed(Request $request)
     {
@@ -178,7 +176,34 @@ class CheckoutController extends Controller
 
     public function checkoutOrder(Order $order, Request $request)
     {
-        // pegar o pedido que nao foi finalizado o pagamento
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+        $lineItems = [];
+        foreach ($order->items as $item) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $item->product->title,
+                        'images' => $item->product->image ? [$item->product->image] : []
+                    ],
+                    'unit_amount' => $item->unit_price * 100,
+                ],
+                'quantity' => $item->quantity,
+            ];
+        }
+
+        $session = Session::create([
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.failed', [], true),
+        ]);
+
+        $order->payment->session_id = $session->id;
+        $order->payment->save();
+
+        return redirect($session->url);
     }
 
     public function updateOrderAndSession(Payment $payment)
@@ -192,10 +217,10 @@ class CheckoutController extends Controller
             $order = $payment->order;
 
             $order->status = OrderStatus::Paid->value;
-            $order->update();   
+            $order->update();
         } catch (Exception $err) {
             DB::rollBack();
-            Log::critical(__METHOD__ . ' method does not work. '. $err->getMessage());
+            Log::critical(__METHOD__ . ' method does not work. ' . $err->getMessage());
             throw $err;
         }
         DB::commit();
@@ -207,7 +232,7 @@ class CheckoutController extends Controller
                 // Mail::to($user)->send(new NewOrderEmail($order, (bool)$user->is_admin));
             }
         } catch (Exception $err) {
-            Log::critical('Email sending does not work. '. $err->getMessage());
+            Log::critical('Email sending does not work. ' . $err->getMessage());
         }
     }
 }
