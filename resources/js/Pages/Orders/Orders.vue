@@ -37,10 +37,10 @@ function payOrder(id) {
                             <tr class="border-b" v-for="(order, i) in props.orders.data" :key="i">
                                 <td class="py-1 px-2">
                                     <a
-                                        href="https://lcommerce.net/orders/4"
+                                        :href="route('orders.show', order.id)"
                                         class="text-purple-600 hover:text-purple-500"
                                     >
-                                        #{{ order.id }}
+                                        #{{ i + 1 }}
                                     </a>
                                 </td>
                                 <td class="py-1 px-2 whitespace-nowrap">
