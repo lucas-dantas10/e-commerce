@@ -27,8 +27,16 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show()
+    public function show(Order $order)
     {
-        return Inertia::render("Orders/OrderDetails");
+        $user = request()->user();
+        
+        if ($order->created_by !== $user->id) 
+            return \redirect()->back()->with('toast', 'Você não tem permissão para realizar esta ação!');
+        
+
+        return Inertia::render("Orders/OrderShow", [
+            'order' => $order->with('items')->first()
+        ]);
     }
 }
