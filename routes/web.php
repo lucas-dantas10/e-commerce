@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout-failed', [CheckoutController::class, 'failed'])->name('checkout.failed');
     Route::get('/product/{product:slug}', [ProductController::class, 'view'])->name('product.view');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 require __DIR__ . '/auth.php';
