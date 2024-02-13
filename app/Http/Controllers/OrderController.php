@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderItems;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -33,10 +34,12 @@ class OrderController extends Controller
         
         if ($order->created_by !== $user->id) 
             return \redirect()->back()->with('toast', 'Você não tem permissão para realizar esta ação!');
-        
 
+        $orderItems = $order->items()->with('product')->get();
+        
         return Inertia::render("Orders/OrderShow", [
-            'order' => $order->with('items')->first()
+            'order' => new OrderResource($order),
+            'orderItems' => $orderItems
         ]);
     }
 }

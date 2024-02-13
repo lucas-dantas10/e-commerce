@@ -6,11 +6,15 @@ const props = defineProps({
     order: {
         type: Object,
         required: true,
-    }
+    },
+    orderItems: {
+        type: Array,
+    },
 });
 
 onMounted(() => {
     console.log(props.order)
+    console.log(props.orderItems)
 })
 </script>
 
@@ -30,31 +34,32 @@ onMounted(() => {
                             <h3 class="font-bold">Sub Total</h3>
                         </div>
                         <div class="flex flex-col gap-2 justify-center">
-                            <h3>{{ order.id }}</h3>
-                            <h3>{{ order.created_at }}</h3>
-                            <h3>{{ order.status }}</h3>
-                            <h3>R$ {{ order.total_price }}</h3>
-                        </div>
-                        <!-- <div class="flex items-center gap-4">
-                            <h3>Order#</h3>
                             <p>{{ order.id }}</p>
+                            <p>{{ order.date }}</p>
+                            <p 
+                                class="text-white py-0 px-[1.3rem] rounded"
+                                :class="order.status === 'pago' ? 'bg-emerald-500' : 'bg-gray-300'"
+                            >
+                                <span>{{ order.status }}</span>
+                            </p>
+                            <p>{{ order.subtotal }}</p>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <h3>Order Date</h3>
-                            <p>{{ order.created_at }}</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <h3>Order Status</h3>
-                            <p>{{ order.status }}</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <h3>Sub Total</h3>
-                            <p>{{ order.amount }}</p>
-                        </div> -->
                     </div>
 
-                    <div>
-                        <p>IMAGEM</p>
+                    <div class="flex items-center gap-4" v-for="(orderItem, i) in props.orderItems">
+                        <div class="w-36 h-32 flex items-center justify-center overflow-hidden">
+                            <img :src="orderItem.product.image" alt="">
+                        </div>
+
+                        <div class="flex flex-col justify-center gap-2">
+                            <p>{{ orderItem.product.title }}</p>
+                            <div class="flex items-center gap-4">
+                                <label for="quantity">Quantity</label>
+                                <p id="quantity" class="py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16">
+                                    {{ orderItem.quantity }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

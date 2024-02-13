@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Number;
 
 class OrderResource extends JsonResource
 {
@@ -17,6 +19,11 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'date' => (new DateTime($this->created_at))->format('Y-m-d'),
+            'status' => $this->status,
+            'subtotal' => Number::currency($this->total_price, 'BRL'),
+        ];
     }
 }
