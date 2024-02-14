@@ -27,7 +27,7 @@ function addCartItem(product) {
                 Home
             </h2>
         </template>
-        <div class="grid gap-8 grig-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5">
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3">
 
             <div v-if="props.products.data.length == 0" >
                 <div>
@@ -36,11 +36,11 @@ function addCartItem(product) {
             </div>
             <div
                 v-else
-                class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white"               
+                class="w-3/6 flex flex-col justify-center items-center border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white"               
                 v-for="product in products.data" 
                 :key="product.id"
             >
-                <a :href="route('product.view', product.slug)" class="aspect-square block overflow-hidden">
+                <a :href="route('product.view', product.slug)" class="h-3/6 aspect-square block overflow-hidden">
                     <img
                         class="object-cover rounded-lg hover:scale-105 hover:rotate-1 transition-transform"
                         :src="product.image_url"
