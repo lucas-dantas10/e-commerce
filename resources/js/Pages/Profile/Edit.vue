@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import ShippingAddressForm from './Partials/ShippingAddressForm.vue';
+import BillingAddressForm from './Partials/BillingAddressForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import ToastList from '@/Components/ToastList.vue';
 import { Head } from '@inertiajs/vue3';
@@ -14,6 +15,12 @@ defineProps({
     status: {
         type: String,
     },
+    country: {
+        type: String,
+    },
+    states: {
+        type: Array
+    }
 });
 </script>
 
@@ -42,7 +49,11 @@ defineProps({
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <ShippingAddressForm class="max-w-xl" />
+                    <ShippingAddressForm :country="country" :states="states" class="max-w-xl" />
+                </div>
+
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <BillingAddressForm :country="country" :states="states" class="max-w-xl" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

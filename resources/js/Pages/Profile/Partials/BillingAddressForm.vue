@@ -3,11 +3,13 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Checkbox from '@/Components/Checkbox.vue';
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
+
 const props = defineProps({
     country: String,
     states: Array,
@@ -20,10 +22,11 @@ const form = useForm({
     cep: '',
     country: '',
     state: '',
+    sameShippingAddress: false,
 });
 
-const saveShippingAddress = () => {
-    form.post(route('profile.shipping'), {
+const saveBillingAddress = () => {
+    form.post(route('profile.billing'), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
@@ -43,14 +46,15 @@ const saveShippingAddress = () => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Endereço de Envio</h2>
+            <h2 class="text-lg font-medium text-gray-900">Endereço de Cobrança</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
-                Certifique-se de que sua conta esteja usando um endereço de envio e endereço de cobraça.
+            <p class="mt-1 text-sm text-gray-600 flex items-center gap-2">
+                <Checkbox :checked="form.sameShippingAddress"/>  
+                <span>O mesmo endereço que o endereço de envio?</span>
             </p>
         </header>
 
-        <form @submit.prevent="saveShippingAddress" class="mt-6 space-y-6">
+        <form @submit.prevent="saveBillingAddress" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="address_one" value="Endereço 1" />
 
@@ -60,8 +64,8 @@ const saveShippingAddress = () => {
                     v-model="form.addressOne"
                     type="text"
                     class="mt-1 block w-full"
-                    autocomplete="address_one"
                     required
+                    autocomplete="address_one"
                 />
 
                 <InputError :message="form.errors.addressOne" class="mt-2" />

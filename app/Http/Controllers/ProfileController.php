@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Country;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +19,13 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $countries = Country::first();
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'country' => $countries->name,
+            'states' => \json_decode($countries->states),
         ]);
     }
 
@@ -59,5 +64,30 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Add a Shipping Address information for user.
+     */
+    public function storeShippingAddress(Request $request)
+    {
+        \dd('shipping');
+    }
+
+    /**
+     * Add a Billing Address information for user.
+     */
+    public function storeBillingAddress(Request $request)
+    {
+        $requestValidated = $request->validate([
+            'addressOne' =>  'string|max:255',
+            'addressTwo' =>  'string|max:255',
+            'city' =>  'string|max:255',
+            'cep' =>  'numeric',
+            'country' =>  'string|max:50',
+            'state' =>  'string|max:50',
+            'sameShippingAddress' =>  'boolean',
+        ]);
+        \dd($requestValidated);
     }
 }
