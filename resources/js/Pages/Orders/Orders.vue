@@ -49,7 +49,7 @@ function payOrder(id) {
                                 <td class="py-1 px-2">
                                     <small
                                         class="text-white py-1 px-2 rounded"
-                                        :class="order.status == 'pago' ? 'bg-emerald-500' : 'bg-red-500'"
+                                        :class="order.status == 'pago' ? 'bg-emerald-500' : 'bg-gray-500'"
                                     >
                                         {{ order.status }}
                                     </small>
