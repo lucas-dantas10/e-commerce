@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AddressType;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Country;
+use App\Models\CustomerAddress;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,14 +22,20 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $countries = Country::where('code', 'usa')->first();
-
-        // dd($countries->states);
+        $addressBilling = CustomerAddress::where('customer_id', $request->user()->id)
+            ->where('type', AddressType::BillingAddresses->value)
+            ->first();
+        $addressShipping = CustomerAddress::where('customer_id', $request->user()->id)
+            ->where('type', AddressType::ShippingAddresses->value)
+            ->first();
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'country' => $countries->name,
             'states' => \json_decode($countries->states),
+            'addressBilling' => $addressBilling,
+            'addressShipping' => $addressShipping,
         ]);
     }
 

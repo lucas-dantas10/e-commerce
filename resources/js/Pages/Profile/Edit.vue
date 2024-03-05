@@ -20,7 +20,13 @@ defineProps({
     },
     states: {
         type: Array
-    }
+    },
+    addressBilling: {
+        type: Object
+    },
+    addressShipping: {
+        type: Object
+    },
 });
 </script>
 
@@ -49,7 +55,7 @@ defineProps({
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <ShippingAddressForm :country="country" :states="states" class="max-w-xl" />
+                    <ShippingAddressForm :country="country" :states="states" :address="addressShipping" class="max-w-xl" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

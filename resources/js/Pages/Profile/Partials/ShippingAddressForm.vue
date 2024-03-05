@@ -11,15 +11,25 @@ const currentPasswordInput = ref(null);
 const props = defineProps({
     country: String,
     states: Array,
+    address: Object
 });
 
 const form = useForm({
     addressOne: '',
     addressTwo: '',
     city: '',
-    cep: '',
-    country: '',
-    state: '',
+    cep: '.',
+    country: '.',
+    state: '.',
+});
+
+onMounted(() => {
+    form.addressOne = props.address.address1;
+    form.addressTwo = props.address.address2;
+    form.city = props.address.city;
+    form.cep = props.address.zipcode;
+    form.country = props.country;
+    form.state = props.states;
 });
 
 const saveShippingAddress = () => {
