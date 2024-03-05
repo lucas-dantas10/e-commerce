@@ -19,7 +19,9 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $countries = Country::first();
+        $countries = Country::where('code', 'usa')->first();
+
+        // dd($countries->states);
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
