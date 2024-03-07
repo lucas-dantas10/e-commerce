@@ -50,7 +50,6 @@ class ProductService
             $data['image_size'] = $image->getSize();
         }
 
-        // $product = $this->productRepository->create($data);
         $product = Product::create($data);
 
         return $product;
@@ -82,7 +81,7 @@ class ProductService
 
     private function saveImage(UploadedFile $image)
     {
-        $path = 'images/' . Str::random();
+        $path = 'public/images/' . Str::random();
 
         if (!Storage::exists($path)) {
             Storage::makeDirectory($path, 0755, true);

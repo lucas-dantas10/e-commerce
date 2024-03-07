@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="w-full h-full p-6 flex justify-between items-center">
+    <div class="w-full h-full flex justify-between items-center">
         <div>
             <p class="text-gray-500">
                 Mostrando {{ pagination.to }} de {{ pagination.total }}

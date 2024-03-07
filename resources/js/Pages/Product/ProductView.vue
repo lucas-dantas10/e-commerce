@@ -59,15 +59,16 @@ function changeQuantity() {
                         />
                     </div>
 
+                    <p class="mt-6 text-gray-500">
+                        <span class="font-bold text-black text-md">Descrição: </span>
+                        {{ product.description }}
+                    </p>
+
                     <div class="mt-6 w-full ">
                         <button @click.prevent="addCartItem()" class="border border-purple-600 rounded-md px-2 py-2 w-full text-xl text-center bg-purple-600 text-white ">
                             Add ao carrinho
                         </button>
                     </div>
-
-                    <p class="mt-6 text-gray-500">
-                        {{ product.description }}
-                    </p>
                 </div>
             </div>
         </section>
