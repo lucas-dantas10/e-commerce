@@ -13,16 +13,25 @@ const currentPasswordInput = ref(null);
 const props = defineProps({
     country: String,
     states: Array,
+    address: Object
 });
 
 const form = useForm({
     addressOne: '',
     addressTwo: '',
     city: '',
-    cep: '',
-    country: '',
-    state: '',
-    sameShippingAddress: false,
+    cep: '.',
+    country: '.',
+    state: '.',
+});
+
+onMounted(() => {
+    form.addressOne = props.address.address1;
+    form.addressTwo = props.address.address2;
+    form.city = props.address.city;
+    form.cep = props.address.zipcode;
+    form.country = props.country;
+    form.state = props.states;
 });
 
 const saveBillingAddress = () => {
@@ -124,7 +133,7 @@ const saveBillingAddress = () => {
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="state.sigla" v-for="state in states.states">{{ state.nome }}</option>
+                    <option :value="state.sigla" v-for="state in states">{{ state.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.state" class="mt-2" />

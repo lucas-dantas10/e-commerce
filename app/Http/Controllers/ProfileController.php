@@ -29,11 +29,22 @@ class ProfileController extends Controller
             ->where('type', AddressType::ShippingAddresses->value)
             ->first();
 
+        $states = json_decode($countries->states, true);
+
+        $statesArray = [];
+
+        foreach ($states as $key => $value) {
+            $statesArray[] = [
+                "siglas" => $key,
+                "name" => $value
+            ];
+        }
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'country' => $countries->name,
-            'states' => \json_decode($countries->states),
+            'states' => $statesArray,
             'addressBilling' => $addressBilling,
             'addressShipping' => $addressShipping,
         ]);

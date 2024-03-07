@@ -130,7 +130,7 @@ const saveShippingAddress = () => {
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="state.sigla" v-for="state in states.states">{{ state.nome }}</option>
+                    <option :value="state.siglas" v-for="state in states">{{ state.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.state" class="mt-2" />
