@@ -92,7 +92,16 @@ class ProfileController extends Controller
      */
     public function storeShippingAddress(Request $request)
     {
-        \dd('shipping');
+        $requestValidated = $request->validate([
+            'addressOne' =>  'string|max:255',
+            'addressTwo' =>  'string|max:255',
+            'city' =>  'string|max:255',
+            'cep' =>  'numeric',
+            'country' =>  'string|max:50',
+            'state' =>  'string|max:50',
+            'sameShippingAddress' =>  'boolean',
+        ]);
+        dd('');
     }
 
     /**

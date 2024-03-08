@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,8 +24,8 @@ class ProductFactory extends Factory
             'price' => fake()->randomFloat(2, 2, 5),
             'created_at' => now(),
             'updated_at' => now(),
-            'created_by' => 1,
-            'updated_by' => 1,
+            'created_by' => User::factory(),
+            'updated_by' => User::factory(),
         ];
     }
 }

@@ -41,7 +41,7 @@ function changeQuantity() {
                         <img
                             :src="product.image"
                             :alt="product.title"
-                            class="w-auto h-auto max-h-full mx-auto"
+                            class="w-auto h-auto max-h-full mx-auto rounded-lg"
                         />
                     </div>
                 </div>

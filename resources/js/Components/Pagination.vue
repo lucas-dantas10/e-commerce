@@ -11,9 +11,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="w-full h-full flex justify-between items-center">
+    <div class="w-full h-full flex justify-between items-center p-6">
         <div>
-            <p class="text-gray-500">
+            <p class="text-gray-500 text-md">
                 Mostrando {{ pagination.to }} de {{ pagination.total }}
             </p>
         </div>
@@ -24,7 +24,7 @@ const props = defineProps({
                     preserve-scroll
                     :href="link.url ?? ''" 
                     v-html="link.label" 
-                    class="flex items-center justify-center px-3 py-2 text-sm rounded-lg text-gray-600"
+                    class="flex items-center justify-center px-3 py-2 text-md rounded-lg text-gray-600"
                     :class="{'bg-gray-200': link.active, '!text-gray-400': !link.url}"
                 />
             </template>

@@ -36,14 +36,18 @@ function addCartItem(product) {
                         Não possui produtos
                     </div>
                 </div>
-                <div v-else class="flex flex-col items-center gap-8 lg:flex-row">
-                    <div v-for="product in products.data" :key="product.id"
-                        class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                <div v-else class=" flex flex-col items-center gap-4 lg:flex-row lg:flex-wrap lg:justify-between">
+
+                    <div 
+                        v-for="product in products.data" 
+                        :key="product.id"
+                        class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+                    >
                         <a 
                             class="relative mx-3 mt-3 flex items-center justify-center h-60 overflow-hidden rounded-xl"
                             :href="route('product.view', product.slug)"
                         >
-                            <img class="object-cover" :src="product.image_url" alt="product image" />
+                            <img class="object-cover hover:max-w-sm transition-all ease-in-out" :src="product.image_url" alt="product image" />
                         </a>
                         <div class="mt-4 px-5 pb-5">
                             <a href="#">
@@ -68,30 +72,6 @@ function addCartItem(product) {
                     </div>
 
                 </div>
-                <!-- <div v-else
-                        class="w-3/6 flex flex-col justify-center items-center border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white"
-                        v-for="product in products.data" :key="product.id">
-                        <a :href="route('product.view', product.slug)"
-                            class="h-3/6 aspect-square block overflow-hidden">
-                            <img class="object-cover rounded-lg hover:scale-105 hover:rotate-1 transition-transform"
-                                :src="product.image_url" :alt="product.description" />
-                        </a>
-
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">{{ product.title }}</div>
-                            <p class="text-gray-700 text-base font-bold">
-                                R$ {{ product.price }}
-                            </p>
-                        </div>
-
-                        <div class="px-6 py-4">
-                            <button type="submit"
-                                class="border px-4 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-500 transition-colors"
-                                @click="addCartItem(product)">
-                                Add ao carrinho
-                            </button>
-                        </div>
-                    </div> -->
             </div>
 
             <Pagination :pagination="products.meta" />
