@@ -43,7 +43,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'country' => $countries->name,
+            'country' => $countries,
             'states' => $statesArray,
             'addressBilling' => $addressBilling,
             'addressShipping' => $addressShipping,
@@ -93,15 +93,16 @@ class ProfileController extends Controller
     public function storeShippingAddress(Request $request)
     {
         $requestValidated = $request->validate([
-            'addressOne' =>  'string|max:255',
-            'addressTwo' =>  'string|max:255',
+            'address1' =>  'required|string|max:255',
+            'address2' =>  'required|string|max:255',
             'city' =>  'string|max:255',
-            'cep' =>  'numeric',
+            'zipcode' =>  'numeric',
             'country' =>  'string|max:50',
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
         ]);
-        dd('');
+        
+        auth()->user()->customer->shippingAddresses->update($requestValidated);
     }
 
     /**
