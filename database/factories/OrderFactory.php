@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
  */
-class CustomerFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,15 +19,12 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         $user = User::factory();
+
         return [
-            'user_id' => $user,
-            'first_name' => fake()->name(),
-            'last_name' => fake()->lastName(),
-            'phone' => '21995969977',
-            'status' => '1',
+            'total_price' => fake()->numberBetween(0, 100),
+            'status' => OrderStatus::Completed->value,
             'created_by' => $user,
             'updated_by' => $user,
-            'created_at' => now()
         ];
     }
 }

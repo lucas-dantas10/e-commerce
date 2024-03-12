@@ -17,6 +17,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $user = User::factory();
         return [
             'title' => fake()->text(),
             'image' => fake()->imageUrl(),
@@ -24,8 +25,8 @@ class ProductFactory extends Factory
             'price' => fake()->randomFloat(2, 2, 5),
             'created_at' => now(),
             'updated_at' => now(),
-            'created_by' => User::factory(),
-            'updated_by' => User::factory(),
+            'created_by' => $user,
+            'updated_by' => $user,
         ];
     }
 }
