@@ -59,7 +59,7 @@ defineProps({
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <BillingAddressForm :country="country" :states="states" :address="addressShipping" class="max-w-xl" />
+                    <BillingAddressForm :country="country" :states="states" :address="addressBilling" class="max-w-xl" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

@@ -93,10 +93,10 @@ class ProfileController extends Controller
     public function storeShippingAddress(Request $request)
     {
         $requestValidated = $request->validate([
-            'address1' =>  'required|string|max:255',
-            'address2' =>  'required|string|max:255',
+            'address1' =>  'string|max:255',
+            'address2' =>  'string|max:255',
             'city' =>  'string|max:255',
-            'zipcode' =>  'numeric',
+            'zipcode' =>  'numeric|max:10',
             'country' =>  'string|max:50',
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
@@ -119,6 +119,7 @@ class ProfileController extends Controller
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
         ]);
-        \dd($requestValidated);
+
+        auth()->user()->customer->billingAddresses->update($requestValidated);
     }
 }

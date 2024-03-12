@@ -17,20 +17,20 @@ const props = defineProps({
 });
 
 const form = useForm({
-    addressOne: '',
-    addressTwo: '',
+    address1: '',
+    address2: '',
     city: '',
-    cep: '.',
-    country: '.',
-    state: '.',
+    zipcode: '',
+    country_code: '',
+    state: '',
 });
 
 onMounted(() => {
-    form.addressOne = props.address.address1;
-    form.addressTwo = props.address.address2;
+    form.address1 = props.address.address1;
+    form.address2 = props.address.address2;
     form.city = props.address.city;
-    form.cep = props.address.zipcode;
-    form.country = props.country;
+    form.zipcode = props.address.zipcode;
+    form.country_code = props.country;
     form.state = props.states;
 });
 
@@ -70,14 +70,14 @@ const saveBillingAddress = () => {
                 <TextInput
                     id="address_one"
                     ref="currentAddressOneInput"
-                    v-model="form.addressOne"
+                    v-model="form.address1"
                     type="text"
                     class="mt-1 block w-full"
                     required
                     autocomplete="address_one"
                 />
 
-                <InputError :message="form.errors.addressOne" class="mt-2" />
+                <InputError :message="form.errors.address1" class="mt-2" />
             </div>
 
             <div>
@@ -86,14 +86,14 @@ const saveBillingAddress = () => {
                 <TextInput
                     id="address_two"
                     ref="addressInput"
-                    v-model="form.addressTwo"
+                    v-model="form.address2"
                     type="text"
                     class="mt-1 block w-full"
                     autocomplete="address_two"
                     required
                 />
 
-                <InputError :message="form.errors.addressTwo" class="mt-2" />
+                <InputError :message="form.errors.address2" class="mt-2" />
             </div>
 
             <div>
@@ -115,11 +115,11 @@ const saveBillingAddress = () => {
                 <InputLabel for="country" value="País" />
 
                 <select 
-                    v-model="form.country"
+                    v-model="form.country_code"
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="countries">{{ country }}</option>
+                    <option :value="country.code">{{ country.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.country" class="mt-2" />

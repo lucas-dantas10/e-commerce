@@ -4,132 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
-use App\Helpers\Cart;
-use App\Mail\NewOrderEmail;
-use App\Models\CartItem;
+use App\Events\NewOrderCreatedEvent;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Payment;
-use App\Models\User;
+use App\Services\Checkout\CheckoutService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
-use Stripe\StripeClient;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckoutController extends Controller
 {
+    public function __construct(
+        protected CheckoutService $checkoutService
+    ) { }
+    
     public function checkout(Request $request)
     {
         $user = $request->user();
-        $customer = $user->customer;
-        if (!$customer->billingAddresses || !$customer->shippingAddresses) {
-            return redirect()->route('profile.edit')->with('toast', 'Por favor, adicionar endereço primeiro!');
-        }
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-        [$products, $cartItems] = Cart::getProductsAndCartItems();
+        $sessionUrl = $this->checkoutService->checkout($user);
 
-        $orderItems = [];
-        $lineItems = [];
-        $totalPrice = 0;
-
-        DB::beginTransaction();
-
-        foreach ($products as $product) {
-            $quantity = $cartItems[$product->id]['quantity'];
-
-            if ($product->quantity !== null && $product->quantity < $quantity) {
-                $message = match ($product->quantity) {
-                    0 => "O produto {$product->title} sem estoque",
-                    1 => "O produto {$product->title} só tem 1 unidade",
-                    default => "O produto {$product->title} só tem {$product->quantity} unidades",
-                };
-
-                return \redirect()->back()->with('toast', $message);
-            }
-        }
-
-        foreach ($products as $product) {
-            $quantity = $cartItems[$product->id]['quantity'];
-            $totalPrice += $product->price * $quantity;
-
-            $lineItems[] = [
-                'price_data' => [
-                    'currency' => 'usd',
-                    'product_data' => [
-                        'name' => $product->title,
-                        'images' => $product->image ? [$product->image] : []
-                    ],
-                    'unit_amount' => $product->price * 100,
-                ],
-                'quantity' => $quantity,
-            ];
-
-            $orderItems[] = [
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'unit_price' => $product->price,
-            ];
-
-            if ($product->quantity !== null) {
-                $product->quantity -= $quantity;
-                $product->save();
-            }
-        }
-        $session = Session::create([
-            'line_items' => $lineItems,
-            'mode' => 'payment',
-            'customer_creation' => 'always',
-            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('checkout.failed', [], true),
-        ]);
-
-        try {
-
-            // Create Order
-            $orderData = [
-                'total_price' => $totalPrice,
-                'status' => OrderStatus::Unpaid,
-                'created_by' => $user->id,
-                'updated_by' => $user->id,
-            ];
-
-            $order = Order::create($orderData);
-
-            // Create Order Items
-            foreach ($orderItems as $orderItem) {
-                $orderItem['order_id'] = $order->id;
-                OrderItem::create($orderItem);
-            }
-
-            // Create Payment
-            $paymentData = [
-                'order_id' => $order->id,
-                'amount' => $totalPrice,
-                'status' => PaymentStatus::Pending,
-                'type' => 'cc',
-                'created_by' => $user->id,
-                'updated_by' => $user->id,
-                'session_id' => $session->id
-            ];
-
-            Payment::create($paymentData);
-        } catch (Exception $err) {
-            DB::rollBack();
-            Log::critical(__METHOD__ . ' method does not work. ' . $err->getMessage());
-            throw $err;
-        }
-
-        DB::commit();
-        CartItem::where('user_id', $user->id)->delete();
-
-        return \redirect($session->url);
+        return redirect($sessionUrl);
     }
 
     public function success(Request $request)
@@ -227,11 +127,7 @@ class CheckoutController extends Controller
         DB::commit();
 
         try {
-            $adminUsers = User::where('is_admin', true)->get();
-
-            foreach ([...$adminUsers, $order->user] as $user) {
-                Mail::to($user)->send(new NewOrderEmail($order, (bool)$user->is_admin));
-            }
+            event(new NewOrderCreatedEvent($order));
         } catch (Exception $err) {
             Log::critical('Email sending does not work. ' . $err->getMessage());
         }
