@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\AddressType;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Resources\CountryResource;
 use App\Models\Country;
 use App\Models\CustomerAddress;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use stdClass;
 
 class ProfileController extends Controller
 {
@@ -21,32 +24,39 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $countries = Country::where('code', 'usa')->first();
-        $addressBilling = CustomerAddress::where('customer_id', $request->user()->id)
-            ->where('type', AddressType::BillingAddresses->value)
-            ->first();
-        $addressShipping = CustomerAddress::where('customer_id', $request->user()->id)
-            ->where('type', AddressType::ShippingAddresses->value)
-            ->first();
+        $customer = $request->user()->customer;
+        $addressBilling = $customer->billingAddresses;
+        $addressShipping = $customer->shippingAddresses;
+        $countryBilling = $addressBilling->country;
+        $countryShipping = $addressShipping->country;
+        $countries = Country::all();
 
-        $states = json_decode($countries->states, true);
+        $stateOfCountryCode = Country::query()
+            ->whereIn('code', [$addressBilling->country_code, $addressShipping->country_code])
+            ->get();
 
-        $statesArray = [];
+        $statesObjects = [];
+        foreach ($stateOfCountryCode as $value) {
 
-        foreach ($states as $key => $value) {
-            $statesArray[] = [
-                "siglas" => $key,
-                "name" => $value
-            ];
+            $statesArray = json_decode($value->states, true);
+
+            foreach ($statesArray as $abbreviation => $name) {
+                $stateObject = new stdClass();
+                $stateObject->abbreviation = $abbreviation;
+                $stateObject->name = $name;
+                $statesObjects[] = $stateObject;
+            }
         }
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'country' => $countries,
-            'states' => $statesArray,
+            'countries' => $countries,
+            'states' => $statesObjects,
             'addressBilling' => $addressBilling,
             'addressShipping' => $addressShipping,
+            'countryBilling' => $countryBilling,
+            'countryShipping' => $countryShipping,
         ]);
     }
 
@@ -101,7 +111,7 @@ class ProfileController extends Controller
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
         ]);
-        
+
         auth()->user()->customer->shippingAddresses->update($requestValidated);
     }
 

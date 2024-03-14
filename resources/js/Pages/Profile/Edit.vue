@@ -15,8 +15,8 @@ defineProps({
     status: {
         type: String,
     },
-    country: {
-        type: String,
+    countries: {
+        type: Array,
     },
     states: {
         type: Array
@@ -25,6 +25,12 @@ defineProps({
         type: Object
     },
     addressShipping: {
+        type: Object
+    },
+    countryBilling: {
+        type: Object
+    },
+    countryShipping: {
         type: Object
     },
 });
@@ -55,11 +61,11 @@ defineProps({
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <ShippingAddressForm :country="country" :states="states" :address="addressShipping" class="max-w-xl" />
+                    <ShippingAddressForm :countries="countries" :countryShipping="countryShipping" :states="states" :address="addressShipping" class="max-w-xl" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <BillingAddressForm :country="country" :states="states" :address="addressBilling" class="max-w-xl" />
+                    <BillingAddressForm :countries="countries" :countryShipping="countryShipping"  :states="states" :address="addressBilling" class="max-w-xl" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

@@ -9,7 +9,8 @@ import { ref, onMounted } from 'vue';
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
 const props = defineProps({
-    country: String,
+    countries: Array,
+    countryShipping: Object,
     states: Array,
     address: Object
 });
@@ -19,7 +20,7 @@ const form = useForm({
     address2: '',
     city: '',
     zipcode: '',
-    country_code: '',
+    country: '',
     state: '',
 });
 
@@ -28,8 +29,8 @@ onMounted(() => {
     form.address2 = props.address.address2;
     form.city = props.address.city;
     form.zipcode = props.address.zipcode;
-    form.country_code = props.country;
-    form.state = props.states;
+    form.country = props.countryShipping.name;
+    form.state = props.address.state;
 });
 
 const saveShippingAddress = () => {
@@ -112,11 +113,11 @@ const saveShippingAddress = () => {
                 <InputLabel for="country" value="País" />
 
                 <select 
-                    v-model="form.country_code"
+                    v-model="form.country"
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="country.code">{{ country.name }}</option>
+                    <option v-for="(country, i) in props.countries" :key="i" :selected="country.name == props.countryShipping.name" :disabled="country.name == props.countryShipping.name" :value="country.name">{{ country.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.country" class="mt-2" />
@@ -130,7 +131,7 @@ const saveShippingAddress = () => {
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="state.siglas" v-for="state in states">{{ state.name }}</option>
+                    <option  v-for="(state, i) in props.states" :key="i" :selected="state.name == props.address.state" :disabled="state.name == props.address.state" :value="state.name">{{ state.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.state" class="mt-2" />

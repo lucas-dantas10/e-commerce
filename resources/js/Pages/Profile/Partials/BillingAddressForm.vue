@@ -11,7 +11,8 @@ const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
 
 const props = defineProps({
-    country: String,
+    countries: Array,
+    countryShipping: Object,
     states: Array,
     address: Object
 });
@@ -21,7 +22,7 @@ const form = useForm({
     address2: '',
     city: '',
     zipcode: '',
-    country_code: '',
+    country: '',
     state: '',
 });
 
@@ -30,8 +31,8 @@ onMounted(() => {
     form.address2 = props.address.address2;
     form.city = props.address.city;
     form.zipcode = props.address.zipcode;
-    form.country_code = props.country;
-    form.state = props.states;
+    form.country = props.countryShipping.name;
+    form.state = props.address.state;
 });
 
 const saveBillingAddress = () => {
@@ -57,10 +58,10 @@ const saveBillingAddress = () => {
         <header>
             <h2 class="text-lg font-medium text-gray-900">Endereço de Cobrança</h2>
 
-            <p class="mt-1 text-sm text-gray-600 flex items-center gap-2">
+            <!-- <p class="mt-1 text-sm text-gray-600 flex items-center gap-2">
                 <Checkbox :checked="form.sameShippingAddress"/>  
                 <span>O mesmo endereço que o endereço de envio?</span>
-            </p>
+            </p> -->
         </header>
 
         <form @submit.prevent="saveBillingAddress" class="mt-6 space-y-6">
@@ -115,11 +116,11 @@ const saveBillingAddress = () => {
                 <InputLabel for="country" value="País" />
 
                 <select 
-                    v-model="form.country_code"
+                    v-model="form.country"
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="country.code">{{ country.name }}</option>
+                    <option v-for="(country, i) in props.countries" :key="i" :selected="country.name == props.countryShipping.name" :disabled="country.name == props.countryShipping.name" :value="country.name">{{ country.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.country" class="mt-2" />
@@ -133,7 +134,7 @@ const saveBillingAddress = () => {
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option :value="state.sigla" v-for="state in states">{{ state.name }}</option>
+                    <option  v-for="(state, i) in props.states" :key="i" :selected="state.name == props.address.state" :disabled="state.name == props.address.state" :value="state.name">{{ state.name }}</option>
                 </select>
 
                 <InputError :message="form.errors.state" class="mt-2" />
