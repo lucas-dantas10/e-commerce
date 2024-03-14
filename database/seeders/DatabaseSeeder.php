@@ -18,15 +18,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([AdminUserSeeder::class, CountrySeeder::class,]);
-        CustomerAddress::factory()->create();
-        CustomerAddress::factory()->create(['type' => AddressType::BillingAddresses->value]);
-        Product::factory()->count(10)->create();
-        Customer::factory()->count(500)->create();
-        // $this->call([
-        //     AdminUserSeeder::class,
-        //     CountrySeeder::class,
-        //     CustomerSeeder::class
-        // ]);
+        $this->call([
+            AdminUserSeeder::class, 
+            CountrySeeder::class,
+            CustomerAddressSeeder::class,
+            ProductSeeder::class,
+            CustomerSeeder::class
+        ]);
     }
 }

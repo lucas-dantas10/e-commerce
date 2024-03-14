@@ -22,7 +22,7 @@ class CustomerAddressFactory extends Factory
             'address1' => fake()->address(),
             'address2' => fake()->address(),
             'city' => fake()->city(),
-            'state' => fake()->state(),
+            'state' => 'Alaska',
             'zipcode' => '123',
             'country_code' => 'usa',
             'customer_id' => 1,
