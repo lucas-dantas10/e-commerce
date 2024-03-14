@@ -36,7 +36,7 @@ class CheckoutService
 
         $this->verifyQuantityProducts($products, $cartItems);
 
-        $this->createDataForStripeSession($products, $cartItems, $totalPrice, $lineItems);
+        $this->createDataForStripeSession($products, $cartItems, $totalPrice, $lineItems, $orderItems);
 
         $session = Session::create([
             'line_items' => $lineItems,
@@ -93,7 +93,7 @@ class CheckoutService
         }
     }
 
-    private function createDataForStripeSession(Collection $products, array $cartItems, &$totalPrice, &$lineItems)
+    private function createDataForStripeSession(Collection $products, array $cartItems, &$totalPrice, &$lineItems, &$orderItems)
     {
         foreach ($products as $product) {
             $quantity = $cartItems[$product->id]['quantity'];
