@@ -12,6 +12,7 @@ use App\Models\Payment;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
@@ -93,7 +94,7 @@ class CheckoutService
         }
     }
 
-    private function createDataForStripeSession(Collection $products, array $cartItems, &$totalPrice, &$lineItems, &$orderItems)
+    private function createDataForStripeSession(Collection $products, array $cartItems, &$totalPrice, &$lineItems, &$orderItems): void
     {
         foreach ($products as $product) {
             $quantity = $cartItems[$product->id]['quantity'];

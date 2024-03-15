@@ -20,9 +20,24 @@ class CountrySeeder extends Seeder
             "AR" => 'Arkansas',
             "CA" => 'California',
         ];
+
+        $indiaStates = [
+            "AN" => "Andaman and Nicobar Islands",
+            "AP" => "Andhra Pradesh",
+            "AR" => "Arunachal Pradesh",
+            "AS" => "Assam",
+            "BR" => "Bihar",
+            "CG" => "Chandigarh",
+            "CH" => "Chhattisgarh",
+            "DN" => "Dadra and Nagar Haveli",
+            "DD" => "Daman and Diu",
+            "DL" => "Delhi",
+            "GA" => "Goa",
+        ];
+
         $countries = [
             ['code' => 'geo', 'name' => 'Georgia', 'states' => null],
-            ['code' => 'ind', 'name' => 'India', 'states' => null],
+            ['code' => 'ind', 'name' => 'India', 'states' => json_encode($indiaStates)],
             ['code' => 'usa', 'name' => 'United States of America', 'states' => json_encode($usaStates)],
             ['code' => 'ger', 'name' => 'Germany', 'states' => null],
         ];

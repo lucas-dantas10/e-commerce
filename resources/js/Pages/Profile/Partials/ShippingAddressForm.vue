@@ -4,32 +4,37 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
+
 const props = defineProps({
     countries: Array,
     countryShipping: Object,
-    states: Array,
     address: Object
 });
-
 const form = useForm({
     address1: '',
     address2: '',
     city: '',
     zipcode: '',
-    country: '',
+    country_code: '',
     state: '',
 });
+const shippingStateOptions = computed(() => {
+    if (!props.countryShipping || !props.countryShipping.states) return [];
+
+    const states = JSON.parse(props.countryShipping.states);
+    return Object.entries(states).map(c => ({abbreviation: c[0], name: c[1]}));
+})
 
 onMounted(() => {
     form.address1 = props.address.address1;
     form.address2 = props.address.address2;
     form.city = props.address.city;
     form.zipcode = props.address.zipcode;
-    form.country = props.countryShipping.name;
+    form.country_code = props.countryShipping.code;
     form.state = props.address.state;
 });
 
@@ -49,6 +54,10 @@ const saveShippingAddress = () => {
         },
     });
 };
+
+function changeStates(countryCode) {
+    props.countryShipping.states = props.countries.find(c => c.code == countryCode).states;
+}
 </script>
 
 <template>
@@ -113,14 +122,22 @@ const saveShippingAddress = () => {
                 <InputLabel for="country" value="País" />
 
                 <select 
-                    v-model="form.country"
+                    v-model="form.country_code"
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                    @change="changeStates(form.country_code)"
                 >
-                    <option v-for="(country, i) in props.countries" :key="i" :selected="country.name == props.countryShipping.name" :disabled="country.name == props.countryShipping.name" :value="country.name">{{ country.name }}</option>
+                    <option 
+                        v-for="(country, i) in props.countries" 
+                        :key="i" 
+                        :selected="country.name == props.countryShipping.name" 
+                        :disabled="country.name == props.countryShipping.name" 
+                        :value="country.code">
+                        {{ country.name }}
+                    </option>
                 </select>
 
-                <InputError :message="form.errors.country" class="mt-2" />
+                <InputError :message="form.errors.country_code" class="mt-2" />
             </div>
 
             <div>
@@ -131,7 +148,13 @@ const saveShippingAddress = () => {
                     required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 >
-                    <option  v-for="(state, i) in props.states" :key="i" :selected="state.name == props.address.state" :disabled="state.name == props.address.state" :value="state.name">{{ state.name }}</option>
+                    <option  
+                        v-for="(state, i) in shippingStateOptions" 
+                        :key="i" 
+                        :selected="state.name == props.address.state" 
+                        :disabled="state.name == props.address.state" 
+                        :value="state.name">{{ state.name }}
+                    </option>
                 </select>
 
                 <InputError :message="form.errors.state" class="mt-2" />

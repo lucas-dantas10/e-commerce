@@ -31,28 +31,10 @@ class ProfileController extends Controller
         $countryShipping = $addressShipping->country;
         $countries = Country::all();
 
-        $stateOfCountryCode = Country::query()
-            ->whereIn('code', [$addressBilling->country_code, $addressShipping->country_code])
-            ->get();
-
-        $statesObjects = [];
-        foreach ($stateOfCountryCode as $value) {
-
-            $statesArray = json_decode($value->states, true);
-
-            foreach ($statesArray as $abbreviation => $name) {
-                $stateObject = new stdClass();
-                $stateObject->abbreviation = $abbreviation;
-                $stateObject->name = $name;
-                $statesObjects[] = $stateObject;
-            }
-        }
-
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'countries' => $countries,
-            'states' => $statesObjects,
             'addressBilling' => $addressBilling,
             'addressShipping' => $addressShipping,
             'countryBilling' => $countryBilling,
@@ -107,7 +89,7 @@ class ProfileController extends Controller
             'address2' =>  'string|max:255',
             'city' =>  'string|max:255',
             'zipcode' =>  'numeric|max:10',
-            'country' =>  'string|max:50',
+            'country_code' =>  'string|max:3',
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
         ]);
@@ -121,11 +103,11 @@ class ProfileController extends Controller
     public function storeBillingAddress(Request $request)
     {
         $requestValidated = $request->validate([
-            'addressOne' =>  'string|max:255',
-            'addressTwo' =>  'string|max:255',
+            'address1' =>  'string|max:255',
+            'address2' =>  'string|max:255',
             'city' =>  'string|max:255',
-            'cep' =>  'numeric',
-            'country' =>  'string|max:50',
+            'zipcode' =>  'numeric|max:10',
+            'country_code' =>  'string|max:3',
             'state' =>  'string|max:50',
             'sameShippingAddress' =>  'boolean',
         ]);
