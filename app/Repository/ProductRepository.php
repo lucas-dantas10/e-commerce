@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repository;
 
@@ -10,8 +10,7 @@ class ProductRepository extends AbstractRepository
 
     public function filterProducts(
         string $search, string $sortField, string $sortDirection, int $perPage
-    )
-    {
+    ) {
         $query = Product::query()
             ->where('title', 'like', "%{$search}%")
             ->orderBy($sortField, $sortDirection)

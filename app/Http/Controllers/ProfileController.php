@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\AddressType;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Resources\CountryResource;
 use App\Models\Country;
-use App\Models\CustomerAddress;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use stdClass;
 
 class ProfileController extends Controller
 {
@@ -85,13 +80,13 @@ class ProfileController extends Controller
     public function storeShippingAddress(Request $request)
     {
         $requestValidated = $request->validate([
-            'address1' =>  'string|max:255',
-            'address2' =>  'string|max:255',
-            'city' =>  'string|max:255',
-            'zipcode' =>  'numeric|max:10',
-            'country_code' =>  'string|max:3',
-            'state' =>  'string|max:50',
-            'sameShippingAddress' =>  'boolean',
+            'address1' => 'string|max:255',
+            'address2' => 'string|max:255',
+            'city' => 'string|max:255',
+            'zipcode' => 'numeric|max:10',
+            'country_code' => 'string|max:3',
+            'state' => 'string|max:50',
+            'sameShippingAddress' => 'boolean',
         ]);
 
         auth()->user()->customer->shippingAddresses->update($requestValidated);
@@ -103,13 +98,13 @@ class ProfileController extends Controller
     public function storeBillingAddress(Request $request)
     {
         $requestValidated = $request->validate([
-            'address1' =>  'string|max:255',
-            'address2' =>  'string|max:255',
-            'city' =>  'string|max:255',
-            'zipcode' =>  'numeric|max:10',
-            'country_code' =>  'string|max:3',
-            'state' =>  'string|max:50',
-            'sameShippingAddress' =>  'boolean',
+            'address1' => 'string|max:255',
+            'address2' => 'string|max:255',
+            'city' => 'string|max:255',
+            'zipcode' => 'numeric|max:10',
+            'country_code' => 'string|max:3',
+            'state' => 'string|max:50',
+            'sameShippingAddress' => 'boolean',
         ]);
 
         auth()->user()->customer->billingAddresses->update($requestValidated);

@@ -22,8 +22,7 @@ class SendNewOrderJob implements ShouldQueue
     public function __construct(
         public Order $order,
         public User $user,
-    )
-    {
+    ) {
         //
     }
 
@@ -32,6 +31,6 @@ class SendNewOrderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user)->send(new NewOrderEmail($this->order, (bool)$this->user->is_admin));
+        Mail::to($this->user)->send(new NewOrderEmail($this->order, (bool) $this->user->is_admin));
     }
 }

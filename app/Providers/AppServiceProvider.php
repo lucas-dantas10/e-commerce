@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Interfaces\RepositoryInterface;
-use App\Repository\AbstractRepository;
 use App\Repository\CartItemsRepository;
 use App\Repository\CustomerRepository;
 use App\Repository\ProductRepository;

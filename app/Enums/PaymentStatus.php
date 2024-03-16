@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace App\Enums;
 
-enum PaymentStatus: string 
+enum PaymentStatus: string
 {
     case Pending = 'pendente';
     case Paid = 'pago';

@@ -19,7 +19,7 @@ class ProductController extends Controller
         $products = Product::paginate($perPage);
 
         return Inertia::render('Dashboard', [
-            'products' => ProductListResource::collection($products)
+            'products' => ProductListResource::collection($products),
         ]);
     }
 
@@ -30,12 +30,12 @@ class ProductController extends Controller
             ->first();
 
         if ($cartItem == null) {
-            return Inertia::render("Product/ProductView", [
+            return Inertia::render('Product/ProductView', [
                 'product' => $product,
             ]);
         }
 
-        return Inertia::render("Product/ProductView", [
+        return Inertia::render('Product/ProductView', [
             'product' => $product,
             'quantity' => $cartItem->quantity,
         ]);

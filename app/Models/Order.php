@@ -22,11 +22,11 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
-    public function user() 
+    public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    
+
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);

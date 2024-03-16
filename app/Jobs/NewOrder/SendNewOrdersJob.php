@@ -19,8 +19,8 @@ class SendNewOrdersJob implements ShouldQueue
      */
     public function __construct(
         public Order $order
-    )
-    {}
+    ) {
+    }
 
     /**
      * Execute the job.
@@ -28,7 +28,7 @@ class SendNewOrdersJob implements ShouldQueue
     public function handle(): void
     {
         $adminUsers = User::where('is_admin', true)->get();
-        
+
         foreach ([...$adminUsers, $this->order->user] as $user) {
             dispatch(new SendNewOrderJob($this->order, $user));
         }

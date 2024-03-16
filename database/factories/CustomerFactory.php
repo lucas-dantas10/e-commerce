@@ -18,6 +18,7 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         $user = User::factory();
+
         return [
             'user_id' => $user,
             'first_name' => fake()->name(),
@@ -26,7 +27,7 @@ class CustomerFactory extends Factory
             'status' => '1',
             'created_by' => $user,
             'updated_by' => $user,
-            'created_at' => now()
+            'created_at' => now(),
         ];
     }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\AddressType;
 use App\Models\CustomerAddress;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CustomerAddressSeeder extends Seeder

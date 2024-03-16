@@ -11,12 +11,12 @@ class Payment extends Model
 
     protected $fillable = [
         'order_id',
-        'amount', 
-        'status',  
+        'amount',
+        'status',
         'type',
         'session_id',
         'created_by',
-        'updated_by', 
+        'updated_by',
     ];
 
     public function order()

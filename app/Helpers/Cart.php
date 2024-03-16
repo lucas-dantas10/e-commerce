@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Helpers;
 
@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
-class Cart 
+class Cart
 {
     public static function getCartItems()
     {
@@ -16,13 +16,13 @@ class Cart
         $cartItems = CartItem::where('user_id', $currentUser->id)
             ->get()
             ->map(
-                fn($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
+                fn ($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
             );
 
         return $cartItems;
     }
 
-    public static function getProductsAndCartItems(): array | Collection
+    public static function getProductsAndCartItems(): array|Collection
     {
         $cartItems = self::getCartItems();
 

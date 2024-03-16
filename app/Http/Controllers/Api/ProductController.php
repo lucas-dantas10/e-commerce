@@ -11,10 +11,10 @@ use App\Services\Product\ProductService;
 
 class ProductController extends Controller
 {
-
     public function __construct(
         protected ProductService $productService
-    ) {  }
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -40,7 +40,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        
+
         $product = $this->productService->saveProduct($data, $request);
 
         return new ProductResource($product);
@@ -52,6 +52,7 @@ class ProductController extends Controller
     public function show(int $id)
     {
         $product = Product::findOrFail($id);
+
         return new ProductResource($product);
     }
 
@@ -69,7 +70,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, int $id)
     {
         $data = $request->validated();
-        
+
         $product = $this->productService->updateProduct($data, $request, $id);
 
         return new ProductResource($product);

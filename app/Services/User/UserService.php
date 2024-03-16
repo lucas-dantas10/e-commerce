@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services\User;
 
@@ -8,12 +8,12 @@ use App\Repository\UserRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
 
-class UserService 
+class UserService
 {
     public function __construct(
         protected UserRepository $userRepository
-    )
-    {}
+    ) {
+    }
 
     public function filterByUsers(): JsonResource
     {
@@ -23,7 +23,7 @@ class UserService
         $sortDirection = request('sort_direction', 'desc');
 
         $query = $this->userRepository->filterUsers($search, $sortField, $sortDirection, $perPage);
-       
+
         return UserResource::collection($query);
     }
 
@@ -32,7 +32,7 @@ class UserService
         $data['is_admin'] = true;
         $data['email_verified_at'] = date('Y-m-d H:i:s');
         $data['password'] = Hash::make($data['password']);
-        
+
         $user = $this->userRepository->create($data);
 
         return new UserResource($user);
@@ -42,7 +42,7 @@ class UserService
     {
         $user = $this->userRepository->find($id);
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
 

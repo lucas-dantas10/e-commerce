@@ -4,11 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Enums\AddressType;
-use App\Models\Customer;
-use App\Models\CustomerAddress;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,11 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            AdminUserSeeder::class, 
+            AdminUserSeeder::class,
             CountrySeeder::class,
             CustomerAddressSeeder::class,
             ProductSeeder::class,
-            CustomerSeeder::class
+            CustomerSeeder::class,
         ]);
     }
 }

@@ -1,10 +1,9 @@
-<?php 
+<?php
 
 namespace App\Services\Customer;
 
 use App\Enums\AddressType;
 use App\Http\Requests\CustomerRequest;
-use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Models\CustomerAddress;
 use App\Repository\CustomerRepository;
@@ -14,11 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class CustomerService
 {
-
     public function __construct(
         protected CustomerRepository $customerRepository
-    )
-    {}
+    ) {
+    }
 
     public function filterByCustomers()
     {
@@ -37,9 +35,9 @@ class CustomerService
     public function showCustomer(int $id)
     {
         $customer = $this->customerRepository
-                ->find($id)
-                ->with('user', 'shippingAddresses', 'billingAddresses')
-                ->first();
+            ->find($id)
+            ->with('user', 'shippingAddresses', 'billingAddresses')
+            ->first();
 
         return $customer;
     }
@@ -65,7 +63,7 @@ class CustomerService
                 $shippingData['type'] = AddressType::ShippingAddresses->value;
                 CustomerAddress::create($shippingData);
             }
-    
+
             if ($customer->billingAddresses) {
                 $customer->billingAddresses->update($billingData);
             } else {
@@ -76,7 +74,7 @@ class CustomerService
         } catch (Exception $err) {
             DB::rollBack();
 
-            Log::critical(__METHOD__ . ' method does not work. '. $err->getMessage());
+            Log::critical(__METHOD__.' method does not work. '.$err->getMessage());
             throw $err;
         }
 

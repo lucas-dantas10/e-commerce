@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Customer;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AdminUserSeeder extends Seeder
@@ -19,7 +18,7 @@ class AdminUserSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('admin123'),
             'email_verified_at' => now(),
-            'is_admin' => true
+            'is_admin' => true,
         ]);
 
         Customer::factory()->create(['user_id' => $user->id]);

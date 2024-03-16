@@ -18,6 +18,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $user = User::factory();
+
         return [
             'title' => fake()->title(),
             'image' => fake()->imageUrl(),

@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Enums;
 
-enum OrderStatus: string 
+enum OrderStatus: string
 {
     case Unpaid = 'não pago';
     case Paid = 'pago';

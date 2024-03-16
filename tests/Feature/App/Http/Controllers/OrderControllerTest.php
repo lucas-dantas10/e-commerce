@@ -36,15 +36,15 @@ it('checks if the subtotal is correct', function () {
         'total_price' => $product->price,
         'status' => 'pago',
         'created_by' => auth()->id(),
-        'created_at' => now()
+        'created_at' => now(),
     ]);
 
     $orderItem = OrderItem::create([
         'product_id' => $product->id,
         'order_id' => $order->id,
-        'quantity' =>  1,
+        'quantity' => 1,
         'unit_price' => $product->price,
-        'created_at' => now()
+        'created_at' => now(),
     ]);
 
     expect($product->price)->toBe($orderItem->unit_price);

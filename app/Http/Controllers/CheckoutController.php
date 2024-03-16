@@ -21,8 +21,9 @@ class CheckoutController extends Controller
 {
     public function __construct(
         protected CheckoutService $checkoutService
-    ) { }
-    
+    ) {
+    }
+
     public function checkout(Request $request)
     {
         $user = $request->user();
@@ -40,7 +41,7 @@ class CheckoutController extends Controller
             $session_id = $request->get('session_id');
             $session = Session::retrieve($session_id);
 
-            if (!$session) {
+            if (! $session) {
                 return \redirect()->route('dashboard')->with('toast', 'Invalido Id da Sessão');
             }
             $payment = Payment::query()
@@ -48,7 +49,7 @@ class CheckoutController extends Controller
                 ->whereIn('status', [PaymentStatus::Pending, PaymentStatus::Paid])
                 ->first();
 
-            if (!$payment) {
+            if (! $payment) {
                 throw new NotFoundHttpException();
             }
 
@@ -86,7 +87,7 @@ class CheckoutController extends Controller
                     'currency' => 'usd',
                     'product_data' => [
                         'name' => $item->product->title,
-                        'images' => $item->product->image ? [$item->product->image] : []
+                        'images' => $item->product->image ? [$item->product->image] : [],
                     ],
                     'unit_amount' => $item->unit_price * 100,
                 ],
@@ -97,7 +98,7 @@ class CheckoutController extends Controller
         $session = Session::create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => route('checkout.success', [], true).'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.failed', [], true),
         ]);
 
@@ -121,7 +122,7 @@ class CheckoutController extends Controller
             $order->update();
         } catch (Exception $err) {
             DB::rollBack();
-            Log::critical(__METHOD__ . ' method does not work. ' . $err->getMessage());
+            Log::critical(__METHOD__.' method does not work. '.$err->getMessage());
             throw $err;
         }
         DB::commit();
@@ -129,7 +130,7 @@ class CheckoutController extends Controller
         try {
             event(new NewOrderCreatedEvent($order));
         } catch (Exception $err) {
-            Log::critical('Email sending does not work. ' . $err->getMessage());
+            Log::critical('Email sending does not work. '.$err->getMessage());
         }
     }
 }

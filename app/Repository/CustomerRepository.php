@@ -15,7 +15,7 @@ class CustomerRepository extends AbstractRepository
         string $sortDirection,
         int $perPage
     ) {
-        
+
         $query = self::loadModel()::query()
             ->with('user')
             ->orderBy("customers.{$sortField}", $sortDirection);

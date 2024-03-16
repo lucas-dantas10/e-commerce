@@ -25,7 +25,6 @@ class ProductService
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
 
-
         $query = $this->productRepository->filterProducts(
             search: $search,
             sortField: $sortField,
@@ -81,16 +80,16 @@ class ProductService
 
     private function saveImage(UploadedFile $image)
     {
-        $path = 'public/images/' . Str::random();
+        $path = 'public/images/'.Str::random();
 
-        if (!Storage::exists($path)) {
+        if (! Storage::exists($path)) {
             Storage::makeDirectory($path, 0755, true);
         }
 
-        if (!Storage::putFileAs($path, $image, $image->getClientOriginalName())) {
+        if (! Storage::putFileAs($path, $image, $image->getClientOriginalName())) {
             throw new Exception("Incapaz de salvar o arquivo {$image->getClientOriginalName()}");
         }
 
-        return $path . '/' . $image->getClientOriginalName();
+        return $path.'/'.$image->getClientOriginalName();
     }
 }

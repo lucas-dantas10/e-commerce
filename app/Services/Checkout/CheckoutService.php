@@ -12,7 +12,6 @@ use App\Models\Payment;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
@@ -22,10 +21,10 @@ class CheckoutService
 {
     public function checkout(User $user)
     {
-        if (!$this->customerHaveAddress($user)) {
+        if (! $this->customerHaveAddress($user)) {
             return redirect()->route('profile.edit')->with('toast', 'Por favor, adicionar endereço primeiro!');
         }
-        
+
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         [$products, $cartItems] = Cart::getProductsAndCartItems();
 
@@ -43,7 +42,7 @@ class CheckoutService
             'line_items' => $lineItems,
             'mode' => 'payment',
             'customer_creation' => 'always',
-            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => route('checkout.success', [], true).'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.failed', [], true),
         ]);
 
@@ -53,10 +52,10 @@ class CheckoutService
             $this->createOrderItem($orderItems, $order);
 
             $this->createPayment($order, $user, $session, $totalPrice);
-            
+
         } catch (Exception $err) {
             DB::rollBack();
-            Log::critical(__METHOD__ . ' method does not work. ' . $err->getMessage());
+            Log::critical(__METHOD__.' method does not work. '.$err->getMessage());
             throw $err;
         }
 
@@ -70,7 +69,7 @@ class CheckoutService
     {
         $customer = $user->customer;
 
-        if (!$customer->billingAddresses || !$customer->shippingAddresses) {
+        if (! $customer->billingAddresses || ! $customer->shippingAddresses) {
             return false;
         }
 
@@ -105,7 +104,7 @@ class CheckoutService
                     'currency' => 'usd',
                     'product_data' => [
                         'name' => $product->title,
-                        'images' => $product->image ? [$product->image] : []
+                        'images' => $product->image ? [$product->image] : [],
                     ],
                     'unit_amount' => $product->price * 100,
                 ],
@@ -156,7 +155,7 @@ class CheckoutService
             'type' => 'cc',
             'created_by' => $user->id,
             'updated_by' => $user->id,
-            'session_id' => $session->id
+            'session_id' => $session->id,
         ];
 
         Payment::create($paymentData);

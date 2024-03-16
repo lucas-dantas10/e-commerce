@@ -8,8 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CustomerResource extends JsonResource
 {
-
     public static $wrap = false;
+
     /**
      * Transform the resource into an array.
      *
@@ -19,6 +19,7 @@ class CustomerResource extends JsonResource
     {
         $billing = $this->billingAddresses;
         $shipping = $this->shippingAddresses;
+
         return [
             'id' => $this->user_id,
             'first_name' => $this->first_name,
@@ -47,7 +48,7 @@ class CustomerResource extends JsonResource
                 'state' => $billing->state,
                 'zipcode' => $billing->zipcode,
                 'country_code' => $billing->country->code,
-            ]
+            ],
         ];
     }
 }

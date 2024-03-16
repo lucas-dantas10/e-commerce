@@ -17,11 +17,11 @@ class OrderItemResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-           'id' => $this->id, 
-           'date' => (new DateTime($this->created_at))->format('Y-m-d'),
-           'status' => $this->status,
-           'subtotal' => Number::currency($this->total_price, 'BRL'),
-           'quantity_items' => $this->quantity
+            'id' => $this->id,
+            'date' => (new DateTime($this->created_at))->format('Y-m-d'),
+            'status' => $this->status,
+            'subtotal' => Number::currency($this->total_price, 'BRL'),
+            'quantity_items' => $this->quantity,
         ];
     }
 }

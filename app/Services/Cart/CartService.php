@@ -6,7 +6,6 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Repository\CartItemsRepository;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Number;
 
 class CartService
@@ -48,7 +47,6 @@ class CartService
             return \redirect()->back();
         }
 
-        return;
     }
 
     public function saveItemInCart($dataValidated, $user)

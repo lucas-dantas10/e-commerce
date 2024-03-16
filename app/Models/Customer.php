@@ -15,19 +15,18 @@ class Customer extends Model
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
-        'first_name', 
+        'first_name',
         'last_name',
-        'phone', 
+        'phone',
         'status',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function shippingAddresses(): HasOne
     {

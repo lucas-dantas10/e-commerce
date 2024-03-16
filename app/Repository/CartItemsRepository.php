@@ -6,9 +6,7 @@ use App\Models\CartItem;
 
 class CartItemsRepository extends AbstractRepository
 {
-
     protected static $model = CartItem::class;
-
 
     public function getCartItems()
     {
@@ -17,7 +15,7 @@ class CartItemsRepository extends AbstractRepository
         $cartItems = CartItem::where('user_id', $currentUser->id)
             ->get()
             ->map(
-                fn($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
+                fn ($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
             );
 
         return $cartItems;

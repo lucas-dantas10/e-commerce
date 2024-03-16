@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CountryResource;
@@ -13,11 +14,10 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-
     public function __construct(
         protected CustomerService $customerService
-    )
-    {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -78,7 +78,8 @@ class CustomerController extends Controller
         return response()->noContent();
     }
 
-    public function countries() {
+    public function countries()
+    {
         $query = Country::query()->orderBy('name', 'asc')->get();
 
         return CountryResource::collection($query);
