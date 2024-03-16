@@ -6,14 +6,14 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref, onMounted, computed } from 'vue';
 
-const passwordInput = ref(null);
-const currentPasswordInput = ref(null);
+const countryShippingValue = ref('');
 
 const props = defineProps({
     countries: Array,
     countryShipping: Object,
     address: Object
 });
+
 const form = useForm({
     address1: '',
     address2: '',
@@ -22,10 +22,11 @@ const form = useForm({
     country_code: '',
     state: '',
 });
-const shippingStateOptions = computed(() => {
-    if (!props.countryShipping || !props.countryShipping.states) return [];
 
-    const states = JSON.parse(props.countryShipping.states);
+const shippingStateOptions = computed(() => {
+    if (!countryShippingValue.value || !countryShippingValue.value.states) return [];
+
+    const states = JSON.parse(countryShippingValue.value.states);
     return Object.entries(states).map(c => ({abbreviation: c[0], name: c[1]}));
 })
 
@@ -36,6 +37,11 @@ onMounted(() => {
     form.zipcode = props.address.zipcode;
     form.country_code = props.countryShipping.code;
     form.state = props.address.state;
+    countryShippingValue.value = {
+        'code': props.countryShipping.code,
+        'name': props.countryShipping.name,
+        'states': props.countryShipping.states,
+    };
 });
 
 const saveShippingAddress = () => {
@@ -43,20 +49,20 @@ const saveShippingAddress = () => {
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
-            if (form.errors.password) {
-                form.reset('password', 'password_confirmation');
-                passwordInput.value.focus();
-            }
-            if (form.errors.current_password) {
-                form.reset('current_password');
-                currentPasswordInput.value.focus();
-            }
+            // if (form.errors.password) {
+            //     form.reset('password', 'password_confirmation');
+            //     passwordInput.value.focus();
+            // }
+            // if (form.errors.current_password) {
+            //     form.reset('current_password');
+            //     currentPasswordInput.value.focus();
+            // }
         },
     });
 };
 
 function changeStates(countryCode) {
-    props.countryShipping.states = props.countries.find(c => c.code == countryCode).states;
+    countryShippingValue.value.states = props.countries.find(c => c.code == countryCode).states;
 }
 </script>
 
@@ -130,8 +136,8 @@ function changeStates(countryCode) {
                     <option 
                         v-for="(country, i) in props.countries" 
                         :key="i" 
-                        :selected="country.name == props.countryShipping.name" 
-                        :disabled="country.name == props.countryShipping.name" 
+                        :selected="country.name == countryShippingValue.name" 
+                        :disabled="country.name == countryShippingValue.name" 
                         :value="country.code">
                         {{ country.name }}
                     </option>
