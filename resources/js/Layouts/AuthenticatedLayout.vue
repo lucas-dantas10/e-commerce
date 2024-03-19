@@ -99,7 +99,7 @@ const quantityCartItems = computed(() => {
                                         <DropdownLink :href="route('profile.edit')"> Meu Perfil </DropdownLink>
                                         <DropdownLink :href="route('orders.index')"> Meus Pedidos </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                            Sair
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -146,7 +146,7 @@ const quantityCartItems = computed(() => {
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Produtos
                         </ResponsiveNavLink>
                     </div>
 
@@ -160,9 +160,10 @@ const quantityCartItems = computed(() => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> Meu Perfil </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('orders.index')"> Meus Pedidos </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
+                                Sair
                             </ResponsiveNavLink>
                         </div>
                     </div>
