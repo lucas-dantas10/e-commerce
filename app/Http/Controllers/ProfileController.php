@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerAddressRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Country;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -77,17 +78,9 @@ class ProfileController extends Controller
     /**
      * Add a Shipping Address information for user.
      */
-    public function storeShippingAddress(Request $request)
+    public function storeShippingAddress(CustomerAddressRequest $request)
     {
-        $requestValidated = $request->validate([
-            'address1' => 'string|max:255',
-            'address2' => 'string|max:255',
-            'city' => 'string|max:255',
-            'zipcode' => 'numeric|max:10',
-            'country_code' => 'string|max:3',
-            'state' => 'string|max:50',
-            'sameShippingAddress' => 'boolean',
-        ]);
+        $requestValidated = $request->validated();
 
         auth()->user()->customer->shippingAddresses->update($requestValidated);
     }
@@ -95,17 +88,9 @@ class ProfileController extends Controller
     /**
      * Add a Billing Address information for user.
      */
-    public function storeBillingAddress(Request $request)
+    public function storeBillingAddress(CustomerAddressRequest $request)
     {
-        $requestValidated = $request->validate([
-            'address1' => 'string|max:255',
-            'address2' => 'string|max:255',
-            'city' => 'string|max:255',
-            'zipcode' => 'numeric|max:10',
-            'country_code' => 'string|max:3',
-            'state' => 'string|max:50',
-            'sameShippingAddress' => 'boolean',
-        ]);
+        $requestValidated = $request->validated();
 
         auth()->user()->customer->billingAddresses->update($requestValidated);
     }

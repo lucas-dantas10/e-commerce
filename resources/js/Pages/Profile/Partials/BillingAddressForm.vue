@@ -106,6 +106,22 @@ function changeStates(countryCode) {
             </div>
 
             <div>
+                <InputLabel for="zipcode" value="CEP" />
+
+                <TextInput
+                    id="zipcode"
+                    ref="addressInput"
+                    v-model="form.zipcode"
+                    type="text"
+                    class="mt-1 block w-full"
+                    autocomplete="zipcode"
+                    required
+                />
+
+                <InputError :message="form.errors.zipcode" class="mt-2" />
+            </div>
+
+            <div>
                 <InputLabel for="city" value="Cidade" />
 
                 <TextInput

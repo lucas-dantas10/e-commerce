@@ -7,6 +7,7 @@ import { useForm } from '@inertiajs/vue3';
 import { ref, onMounted, computed } from 'vue';
 
 const countryShippingValue = ref('');
+const address1Input = ref(null);
 
 const props = defineProps({
     countries: Array,
@@ -49,14 +50,10 @@ const saveShippingAddress = () => {
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {
-            // if (form.errors.password) {
-            //     form.reset('password', 'password_confirmation');
-            //     passwordInput.value.focus();
-            // }
-            // if (form.errors.current_password) {
-            //     form.reset('current_password');
-            //     currentPasswordInput.value.focus();
-            // }
+            if (form.errors.address1) {
+                form.reset('address1');
+                address1Input.value.focus();
+            }
         },
     });
 };
@@ -82,7 +79,7 @@ function changeStates(countryCode) {
 
                 <TextInput
                     id="address_one"
-                    ref="currentAddressOneInput"
+                    ref="address1Input"
                     v-model="form.address1"
                     type="text"
                     class="mt-1 block w-full"
@@ -107,6 +104,22 @@ function changeStates(countryCode) {
                 />
 
                 <InputError :message="form.errors.address2" class="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel for="zipcode" value="CEP" />
+
+                <TextInput
+                    id="zipcode"
+                    ref="addressInput"
+                    v-model.trim="form.zipcode"
+                    type="text"
+                    class="mt-1 block w-full"
+                    autocomplete="zipcode"
+                    required
+                />
+
+                <InputError :message="form.errors.zipcode" class="mt-2" />
             </div>
 
             <div>
