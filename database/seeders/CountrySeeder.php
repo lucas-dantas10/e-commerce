@@ -138,10 +138,10 @@ class CountrySeeder extends Seeder
         ];
 
         $countries = [
-            ['code' => 'geo', 'name' => 'Brasil', 'states' => json_encode($brazilStates)],
-            ['code' => 'ind', 'name' => 'India', 'states' => json_encode($indiaStates)],
-            ['code' => 'usa', 'name' => 'Estados Unidos', 'states' => json_encode($usaStates)],
-            ['code' => 'ger', 'name' => 'Alemanha', 'states' => json_encode($germanyStates)],
+            ['code' => 'BR', 'name' => 'Brasil', 'states' => json_encode($brazilStates)],
+            ['code' => 'IN', 'name' => 'India', 'states' => json_encode($indiaStates)],
+            ['code' => 'US', 'name' => 'Estados Unidos', 'states' => json_encode($usaStates)],
+            ['code' => 'DE', 'name' => 'Alemanha', 'states' => json_encode($germanyStates)],
         ];
         Country::insert($countries);
     }

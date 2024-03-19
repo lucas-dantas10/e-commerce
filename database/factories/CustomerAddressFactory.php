@@ -24,7 +24,7 @@ class CustomerAddressFactory extends Factory
             'city' => fake()->city(),
             'state' => 'Alaska',
             'zipcode' => '123',
-            'country_code' => 'usa',
+            'country_code' => 'US',
             'customer_id' => 1,
         ];
     }
