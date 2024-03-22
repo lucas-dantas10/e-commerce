@@ -21,7 +21,7 @@ class CheckoutService
 {
     public function checkout(User $user)
     {
-        if (! $this->customerHaveAddress($user)) {
+        if (!$this->customerHaveAddress($user)) {
             return redirect()->route('profile.edit')->with('toast', 'Por favor, adicionar endereço primeiro!');
         }
 
@@ -69,7 +69,7 @@ class CheckoutService
     {
         $customer = $user->customer;
 
-        if (! $customer->billingAddresses || ! $customer->shippingAddresses) {
+        if (!$customer->billingAddresses || !$customer->shippingAddresses) {
             return false;
         }
 

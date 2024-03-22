@@ -13,6 +13,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "propaganistas/laravel-phone": "^5.2",
         "spatie/laravel-sluggable": "^3.4",
         "stripe/stripe-php": "^13.14",
         "tightenco/ziggy": "^1.0"

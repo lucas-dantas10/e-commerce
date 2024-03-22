@@ -21,10 +21,10 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $customer = $request->user()->customer;
-        $addressBilling = $customer->billingAddresses;
-        $addressShipping = $customer->shippingAddresses;
-        $countryBilling = $addressBilling->country;
-        $countryShipping = $addressShipping->country;
+        $addressBilling = $customer->billingAddresses ?? '';
+        $addressShipping = $customer->shippingAddresses ?? '';
+        $countryBilling = $addressBilling->country ?? '';
+        $countryShipping = $addressShipping->country ?? '';
         $countries = Country::all();
 
         return Inertia::render('Profile/Edit', [

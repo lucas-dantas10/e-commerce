@@ -7,7 +7,9 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    name: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -32,13 +34,48 @@ const submit = () => {
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.name"
+                    placeholder="Teste"
+                    v-model="form.first_name"
                     required
                     autofocus
                     autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.first_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="Sobrenome" />
+
+                <TextInput
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.last_name"
+                    placeholder="Example"
+                    required
+                    autofocus
+                    autocomplete="name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.last_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="Telefone" />
+
+                <TextInput
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    placeholder="xxxxxxxxxx"
+                    v-model="form.phone"
+                    required
+                    autofocus
+                    autocomplete="name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.phone" />
             </div>
 
             <div class="mt-4">
@@ -49,6 +86,7 @@ const submit = () => {
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
+                    placeholder="email@email.com"
                     required
                     autocomplete="username"
                 />
