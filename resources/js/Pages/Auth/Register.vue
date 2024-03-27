@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { vMaska } from 'maska';
 
 const form = useForm({
     first_name: '',
@@ -66,9 +67,11 @@ const submit = () => {
 
                 <TextInput
                     id="name"
+                    v-maska 
+                    data-maska="+55 (##) #####-####"
                     type="text"
                     class="mt-1 block w-full"
-                    placeholder="xxxxxxxxxx"
+                    placeholder="(xx) xxxxx-xxxx"
                     v-model="form.phone"
                     required
                     autofocus

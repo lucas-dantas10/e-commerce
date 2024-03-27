@@ -9,7 +9,6 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { IoCartOutline, HiLogin } from "oh-vue-icons/icons";
 
-
 addIcons(IoCartOutline, HiLogin);
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
