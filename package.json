@@ -18,6 +18,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "maska": "^2.1.11",
         "oh-vue-icons": "^1.0.0-rc3"
     }
 }
